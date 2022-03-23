@@ -5,6 +5,39 @@ const characterSchema = new Schema(
 	{
 		name: {
 			type: String,
+			required: [true, "Name field is required"],
+		},
+		nen_type: {
+			type: String,
+			required: true,
+		},
+		abilities: {
+			type: Array,
+			required: true,
+		},
+		japanese_name: {
+			type: String,
+			required: true,
+		},
+		affiliations: {
+			type: Array,
+			required: true,
+		},
+
+		profession: {
+			type: String,
+			required: true,
+		},
+		state: {
+			type: String,
+			required: true,
+		},
+		relatives: {
+			type: String,
+			required: true,
+		},
+		gender: {
+			type: String,
 			required: true,
 		},
 		body: {
