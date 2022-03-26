@@ -44,7 +44,7 @@ const show = async (req, res) => {
 		res.status(200).json(character);
 		// res.render("details", { title: "Details", character });
 	} catch (err) {
-		res.status(400).json({ err });
+		res.status(404).json({ err });
 	}
 };
 
