@@ -5,7 +5,7 @@ const characterSchema = new Schema(
 	{
 		name: {
 			type: String,
-			required: [true, "Name field is required"],
+			required: [true, "Name Field is Required"],
 		},
 		nen_type: {
 			type: String,

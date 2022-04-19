@@ -11,8 +11,8 @@ const { catchUnknownError } = require("../middlewares/catchUnknownError");
 
 router.get("/", index);
 router.get("/:id", catchUnknownError(show));
-router.put("/:id", update);
-router.post("/", store);
-router.delete("/:id", destroy);
+router.put("/:id", catchUnknownError(update));
+router.post("/", catchUnknownError(store));
+router.delete("/:id", catchUnknownError(destroy));
 
 module.exports = router;

@@ -1,6 +1,6 @@
 const Character = require("../models/character");
 const { createError } = require("../utils/createError");
-// var createError = require("http-errors");
+
 // @desc    List characters
 // @route   GET /api/characters
 // @access  Private
@@ -8,6 +8,7 @@ const index = async (req, res) => {
 	const characters = await Character.find().sort({ createdAt: -1 });
 	res.status(200).json(characters);
 };
+
 // @desc    Single character
 // @route   GET /api/characters/:id
 // @access  Private
@@ -17,8 +18,7 @@ const show = async (req, res, next) => {
 	const character = await Character.findById(id);
 
 	if (!character) {
-		next(createError(404, "Not Found"));
-		return;
+		return next(createError(404, "Character Not Found"));
 	}
 	res.status(200).json(character);
 
@@ -28,41 +28,30 @@ const show = async (req, res, next) => {
 // @desc    Set character
 // @route   POST /api/characters
 // @access  Private
-const store = async (req, res) => {
+const store = async (req, res, next) => {
 	const { name, body } = req.body;
 
-	try {
-		if (!name || !body) {
-			throw new Error("Invalid Inputs");
-		}
-		const character = await Character.create({
-			name,
-			body,
-		});
-		// res.redirect("/characters");
-		res.status(200).json(character);
-	} catch (err) {
-		console.log(err);
-	}
+	const character = await Character.create({
+		name,
+		body,
+	});
+	// res.redirect("/characters");
+	res.status(200).json(character);
 };
 
 // @desc    Update character
 // @route   PUT /api/characters/:id
 // @access  Private
-const update = async (req, res) => {
-	try {
-		const character = await Character.findByIdAndUpdate(
-			req.params.id,
-			req.body,
-			{
-				new: true,
-			}
-		);
+const update = async (req, res, next) => {
+	const character = await Character.findByIdAndUpdate(
+		req.params.id,
+		req.body,
+		{
+			new: true,
+		}
+	);
 
-		res.status(200).json(character);
-	} catch (err) {
-		res.status(400).json({ message: "Invalid Inputs" });
-	}
+	res.status(200).json(character);
 };
 
 // @desc    Delete character
@@ -70,13 +59,8 @@ const update = async (req, res) => {
 // @access  Private
 const destroy = async (req, res) => {
 	const id = req.params.id;
-
-	try {
-		await Character.findByIdAndDelete(id);
-		res.json({ message: "character deleted" });
-	} catch (err) {
-		console.log(err);
-	}
+	await Character.findByIdAndDelete(id);
+	res.json({ message: "character deleted" });
 };
 
 module.exports = {
