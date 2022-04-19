@@ -29,12 +29,7 @@ const show = async (req, res, next) => {
 // @route   POST /api/characters
 // @access  Private
 const store = async (req, res, next) => {
-	const { name, body } = req.body;
-
-	const character = await Character.create({
-		name,
-		body,
-	});
+	const character = await Character.create({ ...req.body });
 	// res.redirect("/characters");
 	res.status(200).json(character);
 };

@@ -3,7 +3,8 @@ content-type: application/json
 # Accept: application/json
 
 {
-    "name": "try"
+    "name": "try",
+    "nen_type": "enhancer"
 }
 
 ###

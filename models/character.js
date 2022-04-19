@@ -1,15 +1,24 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+var { isEmail } = require("validator");
+
+const isValidNenType = (val) => {
+	const nen_types = ["enhancer", "manipulator", "conjurer"];
+	console.log(val);
+	return nen_types.includes(val) ? true : false;
+};
+
 const characterSchema = new Schema(
 	{
 		name: {
 			type: String,
 			required: [true, "Name Field is Required"],
+			validate: [isEmail, "please enter valid email"],
 		},
 		nen_type: {
 			type: String,
-			required: true,
+			validate: [isValidNenType, "please add valid nen type"],
 		},
 		abilities: {
 			type: Array,
