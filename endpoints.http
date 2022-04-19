@@ -24,5 +24,5 @@ content-type: application/json
 
 
 ###
-GET http://localhost:3000/api/characters/623afb05eb8ae20a5eee6857s
+GET http://localhost:3000/api/characters/1
 content-type: application/json

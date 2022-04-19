@@ -1,16 +1,28 @@
 const Character = require("../models/character");
-
+const { createError } = require("../utils/createError");
+// var createError = require("http-errors");
 // @desc    List characters
 // @route   GET /api/characters
 // @access  Private
 const index = async (req, res) => {
-	try {
-		const characters = await Character.find().sort({ createdAt: -1 });
-		// res.render("index", { title: "Home", characters });
-		res.status(200).json(characters);
-	} catch (err) {
-		console.log(err);
+	const characters = await Character.find().sort({ createdAt: -1 });
+	res.status(200).json(characters);
+};
+// @desc    Single character
+// @route   GET /api/characters/:id
+// @access  Private
+const show = async (req, res, next) => {
+	const id = req.params.id;
+
+	const character = await Character.findById(id);
+
+	if (!character) {
+		next(createError(404, "Not Found"));
+		return;
 	}
+	res.status(200).json(character);
+
+	// res.render("details", { title: "Details", character });
 };
 
 // @desc    Set character
@@ -31,20 +43,6 @@ const store = async (req, res) => {
 		res.status(200).json(character);
 	} catch (err) {
 		console.log(err);
-	}
-};
-
-// @desc    Single character
-// @route   GET /api/characters/:id
-// @access  Private
-const show = async (req, res) => {
-	const id = req.params.id;
-	try {
-		const character = await Character.findById(id);
-		res.status(200).json(character);
-		// res.render("details", { title: "Details", character });
-	} catch (err) {
-		res.status(404).json({ err });
 	}
 };
 
