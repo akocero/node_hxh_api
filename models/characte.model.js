@@ -1,10 +1,15 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-var { isEmail } = require("validator");
-
 const isValidNenType = (val) => {
-	const nen_types = ["enhancer", "manipulator", "conjurer"];
+	const nen_types = [
+		"enhancement",
+		"manipulation",
+		"emission",
+		"specialization",
+		"conjuration",
+		"transmutation",
+	];
 	console.log(val);
 	return nen_types.includes(val) ? true : false;
 };
@@ -13,45 +18,42 @@ const characterSchema = new Schema(
 	{
 		name: {
 			type: String,
-			required: [true, "Name Field is Required"],
-			validate: [isEmail, "please enter valid email"],
+			required: [true, "Name is required"],
+			unique: [true, "Name already excist"],
 		},
 		nen_type: {
 			type: String,
-			validate: [isValidNenType, "please add valid nen type"],
+			validate: [isValidNenType, "Nen-type is not valid"],
 		},
 		abilities: {
 			type: Array,
-			required: true,
 		},
 		japanese_name: {
 			type: String,
-			required: true,
 		},
 		affiliations: {
 			type: Array,
-			required: true,
 		},
-
 		profession: {
-			type: String,
-			required: true,
+			type: Array,
+			required: [true, "Profession is required"],
 		},
 		state: {
 			type: String,
-			required: true,
+			required: [true, "State is required"],
 		},
-		relatives: {
-			type: String,
-			required: true,
-		},
+		relatives: [
+			{
+				type: mongoose.Schema.Types.ObjectId,
+				ref: "Character",
+			},
+		],
 		gender: {
 			type: String,
-			required: true,
+			required: [true, "Gender is required"],
 		},
-		body: {
+		details: {
 			type: String,
-			required: true,
 		},
 	},
 	{ timestamps: true }
