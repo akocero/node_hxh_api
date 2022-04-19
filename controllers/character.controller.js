@@ -1,4 +1,4 @@
-const Character = require("../models/character");
+const Character = require("../models/characte.model");
 const { createError } = require("../utils/createError");
 
 // @desc    List characters

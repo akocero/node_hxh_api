@@ -4,7 +4,7 @@ const connectDB = require("./config/db");
 const port = process.env.PORT || 5000;
 const { errorHandler } = require("./middlewares/errorHandler");
 // routes
-const characterRoutes = require("./routes/characterRoutes");
+const characterRoutes = require("./routes/character.routes");
 
 connectDB();
 

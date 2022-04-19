@@ -6,7 +6,7 @@ const {
 	update,
 	show,
 	destroy,
-} = require("../controllers/characterController");
+} = require("../controllers/character.controller");
 const { catchUnknownError } = require("../middlewares/catchUnknownError");
 
 router.get("/", index);
