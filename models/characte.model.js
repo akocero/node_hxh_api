@@ -10,7 +10,6 @@ const isValidNenType = (val) => {
 		"conjuration",
 		"transmutation",
 	];
-	console.log(val);
 	return nen_types.includes(val) ? true : false;
 };
 
