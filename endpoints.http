@@ -3,7 +3,7 @@ content-type: application/json
 # Accept: application/json
 
 {
-    "name": "Isaac Netero",
+    "name": "Beyond Netero",
     "nen_type": "enhancement",
     "abilities": ["100-Type Guanyin Bodhisattva"],
     "japanese_name": "アイザック゠ネテロ",

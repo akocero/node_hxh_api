@@ -1,5 +1,6 @@
 const Character = require("../models/characte.model");
 const { createError } = require("../utils/createError");
+const cloudinary = require("../utils/cloudinary");
 
 const index = async (req, res) => {
 	const characters = await Character.find()
@@ -26,7 +27,17 @@ const show = async (req, res, next) => {
 };
 
 const store = async (req, res, next) => {
-	const character = await Character.create({ ...req.body });
+	const character = await Character.create({
+		...req.body,
+	});
+
+	// res.json(req.body);
+	if (req.file && character) {
+		const image_res = await cloudinary.uploader.upload(req.file.path);
+		character.image = image_res.secure_url;
+		await character.save();
+	}
+
 	// res.redirect("/characters");
 	res.status(200).json(character);
 };
