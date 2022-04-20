@@ -20,9 +20,16 @@ const characterSchema = new Schema(
 			required: [true, "Name is required"],
 			unique: [true, "Name already excist"],
 		},
+		gender: {
+			type: String,
+			required: [true, "Gender is required"],
+		},
 		nen_type: {
 			type: String,
 			validate: [isValidNenType, "Nen-type is not valid"],
+		},
+		image: {
+			type: String,
 		},
 		abilities: {
 			type: Array,
@@ -47,10 +54,6 @@ const characterSchema = new Schema(
 				ref: "Character",
 			},
 		],
-		gender: {
-			type: String,
-			required: [true, "Gender is required"],
-		},
 		details: {
 			type: String,
 		},
