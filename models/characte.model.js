@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const isValidNenType = (val) => {
+	val = val.toLowerCase();
 	const nen_types = [
 		"enhancement",
 		"manipulation",
@@ -9,6 +10,7 @@ const isValidNenType = (val) => {
 		"specialization",
 		"conjuration",
 		"transmutation",
+		"unknown",
 	];
 	return nen_types.includes(val) ? true : false;
 };
