@@ -2,6 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv").config();
 const connectDB = require("./config/db");
 const port = process.env.PORT || 5000;
+const cors = require("cors");
 const { errorHandler } = require("./middlewares/errorHandler");
 // routes
 const characterRoutes = require("./routes/character.routes");
@@ -9,6 +10,7 @@ const characterRoutes = require("./routes/character.routes");
 connectDB();
 
 const app = express();
+app.use(cors());
 
 app.get("/", (req, res, next) => {
 	res.status(200).json("welcome to hxh api");
