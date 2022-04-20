@@ -22,6 +22,9 @@ const characterSchema = new Schema(
 			required: [true, "Name is required"],
 			unique: [true, "Name already excist"],
 		},
+		also_known_as: {
+			type: String,
+		},
 		gender: {
 			type: String,
 			required: [true, "Gender is required"],
@@ -58,6 +61,9 @@ const characterSchema = new Schema(
 		],
 		details: {
 			type: String,
+		},
+		hunter_star: {
+			type: Number,
 		},
 	},
 	{ timestamps: true }
