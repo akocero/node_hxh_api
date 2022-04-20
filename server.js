@@ -10,6 +10,10 @@ connectDB();
 
 const app = express();
 
+app.get("/", (req, res, next) => {
+	res.status(200).json("welcome to hxh api");
+});
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
