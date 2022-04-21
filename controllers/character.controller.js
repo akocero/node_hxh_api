@@ -33,7 +33,9 @@ const store = async (req, res, next) => {
 
 	// res.json(req.body);
 	if (req.file && character) {
-		const image_res = await cloudinary.uploader.upload(req.file.path);
+		const image_res = await cloudinary.uploader.upload(req.file.path, {
+			upload_preset: "hxh-api",
+		});
 		console.log(image_res);
 		character.image = {
 			public_id: image_res.public_id,
@@ -60,7 +62,9 @@ const update = async (req, res, next) => {
 	}
 
 	if (req.file && character) {
-		const image_res = await cloudinary.uploader.upload(req.file.path);
+		const image_res = await cloudinary.uploader.upload(req.file.path, {
+			upload_preset: "hxh-api",
+		});
 		console.log(image_res);
 		character.image = {
 			public_id: image_res.public_id,
