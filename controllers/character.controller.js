@@ -55,6 +55,10 @@ const update = async (req, res, next) => {
 		{ new: true, runValidators: true }
 	);
 
+	if (req.file && character && character.image) {
+		await cloudinary.uploader.destroy(character.image.public_id);
+	}
+
 	if (req.file && character) {
 		const image_res = await cloudinary.uploader.upload(req.file.path);
 		console.log(image_res);
