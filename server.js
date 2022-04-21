@@ -6,6 +6,7 @@ const cors = require("cors");
 const { errorHandler } = require("./middlewares/errorHandler");
 // routes
 const characterRoutes = require("./routes/character.routes");
+const userRoutes = require("./routes/user.routes");
 
 connectDB();
 
@@ -20,6 +21,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use("/api/characters", characterRoutes);
+app.use("/api/auth", userRoutes);
 
 app.use((req, res, next) => {
 	const error = new Error("Not Found");
