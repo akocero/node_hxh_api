@@ -42,9 +42,6 @@ const characterSchema = new Schema(
 			validate: [isValidNenType, "Nen-type is not valid"],
 		},
 		image: {
-			type: String,
-		},
-		image: {
 			public_id: String,
 			secure_url: String,
 			width: Number,
