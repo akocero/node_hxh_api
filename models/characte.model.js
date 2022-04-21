@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const isValidNenType = (val) => {
-	val = val.toLowerCase();
+	let valid = true;
 	const nen_types = [
 		"enhancement",
 		"manipulation",
@@ -12,7 +12,16 @@ const isValidNenType = (val) => {
 		"transmutation",
 		"unknown",
 	];
-	return nen_types.includes(val) ? true : false;
+
+	val.forEach((item) => {
+		item = item.toLowerCase();
+
+		if (!nen_types.includes(item)) {
+			return false;
+		}
+	});
+
+	return valid;
 };
 
 const characterSchema = new Schema(
@@ -30,7 +39,7 @@ const characterSchema = new Schema(
 			required: [true, "Gender is required"],
 		},
 		nen_type: {
-			type: String,
+			type: Array,
 			validate: [isValidNenType, "Nen-type is not valid"],
 		},
 		image: {
