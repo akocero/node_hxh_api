@@ -15,9 +15,8 @@ const isValidNenType = (val) => {
 
 	val.forEach((item) => {
 		item = item.toLowerCase();
-
 		if (!nen_types.includes(item)) {
-			return false;
+			valid = false;
 		}
 	});
 
@@ -32,7 +31,7 @@ const characterSchema = new Schema(
 			unique: [true, "Name already excist"],
 		},
 		also_known_as: {
-			type: String,
+			type: Array,
 		},
 		gender: {
 			type: String,
@@ -60,7 +59,7 @@ const characterSchema = new Schema(
 		affiliations: {
 			type: Array,
 		},
-		profession: {
+		professions: {
 			type: Array,
 			required: [true, "Profession is required"],
 		},
