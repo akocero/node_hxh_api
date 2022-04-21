@@ -73,7 +73,7 @@ const characterSchema = new Schema(
 				ref: "Character",
 			},
 		],
-		details: {
+		description: {
 			type: String,
 		},
 		hunter_star: {
