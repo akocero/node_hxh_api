@@ -14,7 +14,7 @@ const app = express();
 app.use(cors());
 
 app.get("/", (req, res, next) => {
-	res.status(200).json("welcome to hxh api");
+	res.redirect("https://hxh-api.vercel.app/");
 });
 
 app.use(express.json());
