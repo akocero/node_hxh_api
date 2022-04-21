@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const familySchema = new Schema(
+const groupSchema = new Schema(
 	{
 		name: {
 			type: String,
@@ -10,11 +10,8 @@ const familySchema = new Schema(
 		},
 		leaders: [
 			{
-				leader: {
-					type: mongoose.Schema.Types.ObjectId,
-					ref: "Character",
-				},
-				leader_details: String,
+				type: mongoose.Schema.Types.ObjectId,
+				ref: "Character",
 			},
 		],
 		description: {
@@ -24,6 +21,6 @@ const familySchema = new Schema(
 	{ timestamps: true }
 );
 
-const Family = mongoose.model("Family", familySchema);
+const Group = mongoose.model("Group", groupSchema);
 
-module.exports = Family;
+module.exports = Group;

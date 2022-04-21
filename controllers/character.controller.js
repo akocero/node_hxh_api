@@ -6,7 +6,7 @@ const index = async (req, res) => {
 	const characters = await Character.find()
 		.sort({ createdAt: -1 })
 		.select("-createdAt -updatedAt -__v")
-		.populate("relatives", "name");
+		.populate("relatives.relative", "name");
 	res.status(200).json(characters);
 };
 

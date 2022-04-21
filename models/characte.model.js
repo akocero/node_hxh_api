@@ -56,9 +56,12 @@ const characterSchema = new Schema(
 		japanese_name: {
 			type: String,
 		},
-		affiliations: {
-			type: Array,
-		},
+		affiliations: [
+			{
+				type: mongoose.Schema.Types.ObjectId,
+				ref: "Group",
+			},
+		],
 		professions: {
 			type: Array,
 			required: [true, "Profession is required"],
@@ -69,15 +72,22 @@ const characterSchema = new Schema(
 		},
 		relatives: [
 			{
-				type: mongoose.Schema.Types.ObjectId,
-				ref: "Character",
+				relative: {
+					type: mongoose.Schema.Types.ObjectId,
+					ref: "Character",
+				},
+				relationship: String,
 			},
 		],
-		description: {
+		descriptions: {
 			type: String,
 		},
 		hunter_star: {
 			type: Number,
+		},
+		family: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "Family",
 		},
 	},
 	{ timestamps: true }
