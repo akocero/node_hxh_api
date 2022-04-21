@@ -6,9 +6,9 @@ const { createError } = require("../utils/createError");
 const register = async (req, res, next) => {
 	const { name, email, password } = req.body;
 
-	if (!name || !email || !password) {
-		return next(createError(400, "Please add all fields"));
-	}
+	// if (!name || !email || !password) {
+	// 	return next(createError(400, "Please add all fields"));
+	// }
 
 	// Check if user exists
 	const userExists = await User.findOne({ email });
