@@ -12,7 +12,7 @@ const upload = require("../utils/multer");
 
 router.get("/", index);
 router.get("/:id", catchUnknownError(show));
-router.put("/:id", catchUnknownError(update));
+router.put("/:id", upload.single("image"), catchUnknownError(update));
 router.post("/", upload.single("image"), catchUnknownError(store));
 router.delete("/:id", catchUnknownError(destroy));
 

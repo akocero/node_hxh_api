@@ -34,7 +34,13 @@ const store = async (req, res, next) => {
 	// res.json(req.body);
 	if (req.file && character) {
 		const image_res = await cloudinary.uploader.upload(req.file.path);
-		character.image = image_res.secure_url;
+		console.log(image_res);
+		character.image = {
+			public_id: image_res.public_id,
+			secure_url: image_res.secure_url,
+			width: image_res.width,
+			height: image_res.height,
+		};
 		await character.save();
 	}
 
@@ -48,6 +54,18 @@ const update = async (req, res, next) => {
 		{ $set: req.body },
 		{ new: true, runValidators: true }
 	);
+
+	if (req.file && character) {
+		const image_res = await cloudinary.uploader.upload(req.file.path);
+		console.log(image_res);
+		character.image = {
+			public_id: image_res.public_id,
+			secure_url: image_res.secure_url,
+			width: image_res.width,
+			height: image_res.height,
+		};
+		await character.save();
+	}
 
 	res.status(200).json(character);
 };

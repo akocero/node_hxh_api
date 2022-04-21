@@ -36,6 +36,12 @@ const characterSchema = new Schema(
 		image: {
 			type: String,
 		},
+		image: {
+			public_id: String,
+			secure_url: String,
+			width: Number,
+			height: Number,
+		},
 		abilities: {
 			type: Array,
 		},
