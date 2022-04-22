@@ -8,6 +8,12 @@ const groupSchema = new Schema(
 			required: [true, "Name is required"],
 			unique: [true, "Name already excist"],
 		},
+		image: {
+			public_id: String,
+			secure_url: String,
+			width: Number,
+			height: Number,
+		},
 		leaders: [
 			{
 				type: mongoose.Schema.Types.ObjectId,
