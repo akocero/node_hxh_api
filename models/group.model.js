@@ -16,8 +16,11 @@ const groupSchema = new Schema(
 		},
 		leaders: [
 			{
-				type: mongoose.Schema.Types.ObjectId,
-				ref: "Character",
+				leader: {
+					type: mongoose.Schema.Types.ObjectId,
+					ref: "Character",
+				},
+				leader_details: String,
 			},
 		],
 		description: {
