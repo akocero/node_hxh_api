@@ -13,7 +13,7 @@ const index = async (req, res) => {
 const show = async (req, res, next) => {
 	const id = req.params.id;
 
-	const family = await Family.findById(id);
+	const family = await Family.findById(id).populate("leaders.leader", "name");
 
 	if (!family) {
 		return next(createError(404, "Family Not Found"));

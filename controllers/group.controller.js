@@ -13,7 +13,7 @@ const index = async (req, res) => {
 const show = async (req, res, next) => {
 	const id = req.params.id;
 
-	const group = await Group.findById(id);
+	const group = await Group.findById(id).populate("leaders.leader", "name");
 
 	if (!group) {
 		return next(createError(404, "Group Not Found"));

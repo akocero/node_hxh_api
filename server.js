@@ -8,6 +8,7 @@ const { errorHandler } = require("./middlewares/errorHandler");
 const characterRoutes = require("./routes/character.routes");
 const userRoutes = require("./routes/user.routes");
 const familyRoutes = require("./routes/family.routes");
+const groupRoutes = require("./routes/group.routes");
 
 connectDB();
 
@@ -23,7 +24,8 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use("/api/characters", characterRoutes);
 app.use("/api/auth", userRoutes);
-app.use("/api/family", familyRoutes);
+app.use("/api/families", familyRoutes);
+app.use("/api/groups", groupRoutes);
 
 app.use((req, res, next) => {
 	const error = new Error("Not Found");
