@@ -8,6 +8,9 @@ const groupSchema = new Schema(
 			required: [true, "Name is required"],
 			unique: [true, "Name already excist"],
 		},
+		also_known_as: {
+			type: Array,
+		},
 		image: {
 			public_id: String,
 			secure_url: String,
@@ -23,6 +26,15 @@ const groupSchema = new Schema(
 				leader_details: String,
 			},
 		],
+		status: {
+			type: String,
+		},
+		classification: {
+			type: String,
+		},
+		base_of_operations: {
+			type: Array,
+		},
 		description: {
 			type: String,
 		},
