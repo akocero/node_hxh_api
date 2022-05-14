@@ -1,47 +1,45 @@
-const mongoose = require("mongoose");
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const groupSchema = new Schema(
 	{
 		name: {
 			type: String,
-			required: [true, "Name is required"],
-			unique: [true, "Name already excist"],
+			required: [true, 'Name is required'],
+			unique: [true, 'Name already excist']
 		},
 		also_known_as: {
-			type: Array,
+			type: Array
 		},
 		image: {
 			public_id: String,
 			secure_url: String,
 			width: Number,
-			height: Number,
+			height: Number
 		},
 		leaders: [
 			{
 				leader: {
 					type: mongoose.Schema.Types.ObjectId,
-					ref: "Character",
+					ref: 'Character'
 				},
-				leader_details: String,
-			},
+				leader_details: String
+			}
 		],
 		status: {
-			type: String,
+			type: String
 		},
 		classification: {
-			type: String,
+			type: String
 		},
 		base_of_operations: {
-			type: Array,
+			type: Array
 		},
 		description: {
-			type: String,
-		},
+			type: String
+		}
 	},
 	{ timestamps: true }
 );
 
-const Group = mongoose.model("Group", groupSchema);
-
-module.exports = Group;
+export default mongoose.model('Group', groupSchema);

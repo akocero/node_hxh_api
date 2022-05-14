@@ -1,12 +1,12 @@
-const Character = require("../models/character.model");
-const { createError } = require("../utils/createError");
-const cloudinary = require("../utils/cloudinary");
+import Character from '../models/character.model.js';
+import { createError } from '../utils/createError.js';
+import cloudinary from '../utils/cloudinary.js';
 
 const index = async (req, res) => {
 	const characters = await Character.find()
 		.sort({ createdAt: -1 })
-		.select("-createdAt -updatedAt -__v")
-		.populate("relatives.relative", "name");
+		.select('-createdAt -updatedAt -__v')
+		.populate('relatives.relative', 'name');
 	res.status(200).json(characters);
 };
 
@@ -14,12 +14,12 @@ const show = async (req, res, next) => {
 	const id = req.params.id;
 
 	const character = await Character.findById(id).populate(
-		"relatives",
-		"name"
+		'relatives',
+		'name'
 	);
 
 	if (!character) {
-		return next(createError(404, "Character Not Found"));
+		return next(createError(404, 'Character Not Found'));
 	}
 	res.status(200).json(character);
 
@@ -28,20 +28,20 @@ const show = async (req, res, next) => {
 
 const store = async (req, res, next) => {
 	const character = await Character.create({
-		...req.body,
+		...req.body
 	});
 
 	// res.json(req.body);
 	if (req.file && character) {
 		const image_res = await cloudinary.uploader.upload(req.file.path, {
-			upload_preset: "hxh-api",
+			upload_preset: 'hxh-api'
 		});
 		console.log(image_res);
 		character.image = {
 			public_id: image_res.public_id,
 			secure_url: image_res.secure_url,
 			width: image_res.width,
-			height: image_res.height,
+			height: image_res.height
 		};
 		await character.save();
 	}
@@ -63,14 +63,14 @@ const update = async (req, res, next) => {
 
 	if (req.file && character) {
 		const image_res = await cloudinary.uploader.upload(req.file.path, {
-			upload_preset: "hxh-api",
+			upload_preset: 'hxh-api'
 		});
 		console.log(image_res);
 		character.image = {
 			public_id: image_res.public_id,
 			secure_url: image_res.secure_url,
 			width: image_res.width,
-			height: image_res.height,
+			height: image_res.height
 		};
 		await character.save();
 	}
@@ -81,13 +81,7 @@ const update = async (req, res, next) => {
 const destroy = async (req, res) => {
 	const id = req.params.id;
 	await Character.findByIdAndDelete(id);
-	res.json({ message: "character deleted" });
+	res.json({ message: 'character deleted' });
 };
 
-module.exports = {
-	index,
-	store,
-	show,
-	destroy,
-	update,
-};
+export { index, store, show, destroy, update };

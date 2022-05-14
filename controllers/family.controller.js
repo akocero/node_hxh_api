@@ -1,22 +1,22 @@
-const Family = require("../models/family.model");
-const { createError } = require("../utils/createError");
-const cloudinary = require("../utils/cloudinary");
+import Family from '../models/family.model.js';
+import { createError } from '../utils/createError.js';
+import cloudinary from '../utils/cloudinary.js';
 
 const index = async (req, res) => {
 	const families = await Family.find()
 		.sort({ createdAt: -1 })
-		.select("-createdAt -updatedAt -__v")
-		.populate("leaders.leader", "name");
+		.select('-createdAt -updatedAt -__v')
+		.populate('leaders.leader', 'name');
 	res.status(200).json(families);
 };
 
 const show = async (req, res, next) => {
 	const id = req.params.id;
 
-	const family = await Family.findById(id).populate("leaders.leader", "name");
+	const family = await Family.findById(id).populate('leaders.leader', 'name');
 
 	if (!family) {
-		return next(createError(404, "Family Not Found"));
+		return next(createError(404, 'Family Not Found'));
 	}
 	res.status(200).json(family);
 
@@ -32,7 +32,7 @@ const store = async (req, res, next) => {
 	// res.json(req.body);
 	if (req.file && family) {
 		const image_res = await cloudinary.uploader.upload(req.file.path, {
-			upload_preset: "hxh-api",
+			upload_preset: 'hxh-api',
 		});
 
 		family.image = {
@@ -52,7 +52,7 @@ const update = async (req, res, next) => {
 	const family = await Family.findOneAndUpdate(
 		{ _id: req.params.id },
 		{ $set: req.body },
-		{ new: true, runValidators: true }
+		{ new: true, runValidators: true },
 	);
 
 	if (req.file && family && family.image) {
@@ -61,7 +61,7 @@ const update = async (req, res, next) => {
 
 	if (req.file && family) {
 		const image_res = await cloudinary.uploader.upload(req.file.path, {
-			upload_preset: "hxh-api",
+			upload_preset: 'hxh-api',
 		});
 
 		family.image = {
@@ -79,13 +79,7 @@ const update = async (req, res, next) => {
 const destroy = async (req, res) => {
 	const id = req.params.id;
 	await Family.findByIdAndDelete(id);
-	res.json({ message: "family deleted" });
+	res.json({ message: 'family deleted' });
 };
 
-module.exports = {
-	index,
-	store,
-	show,
-	destroy,
-	update,
-};
+export { index, store, show, destroy, update };

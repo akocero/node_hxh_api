@@ -1,22 +1,22 @@
-const Group = require("../models/group.model");
-const { createError } = require("../utils/createError");
-const cloudinary = require("../utils/cloudinary");
+import Group from '../models/group.model.js';
+import { createError } from '../utils/createError.js';
+import cloudinary from '../utils/cloudinary.js';
 
 const index = async (req, res) => {
 	const groups = await Group.find()
 		.sort({ createdAt: -1 })
-		.select("-createdAt -updatedAt -__v")
-		.populate("leaders.leader", "name");
+		.select('-createdAt -updatedAt -__v')
+		.populate('leaders.leader', 'name');
 	res.status(200).json(groups);
 };
 
 const show = async (req, res, next) => {
 	const id = req.params.id;
 
-	const group = await Group.findById(id).populate("leaders.leader", "name");
+	const group = await Group.findById(id).populate('leaders.leader', 'name');
 
 	if (!group) {
-		return next(createError(404, "Group Not Found"));
+		return next(createError(404, 'Group Not Found'));
 	}
 	res.status(200).json(group);
 
@@ -26,20 +26,20 @@ const show = async (req, res, next) => {
 const store = async (req, res, next) => {
 	// res.status(200).json(req.body);
 	const group = await Group.create({
-		...req.body,
+		...req.body
 	});
 
 	// res.json(req.body);
 	if (req.file && group) {
 		const image_res = await cloudinary.uploader.upload(req.file.path, {
-			upload_preset: "hxh-api",
+			upload_preset: 'hxh-api'
 		});
 
 		group.image = {
 			public_id: image_res.public_id,
 			secure_url: image_res.secure_url,
 			width: image_res.width,
-			height: image_res.height,
+			height: image_res.height
 		};
 		await group.save();
 	}
@@ -61,14 +61,14 @@ const update = async (req, res, next) => {
 
 	if (req.file && group) {
 		const image_res = await cloudinary.uploader.upload(req.file.path, {
-			upload_preset: "hxh-api",
+			upload_preset: 'hxh-api'
 		});
 
 		group.image = {
 			public_id: image_res.public_id,
 			secure_url: image_res.secure_url,
 			width: image_res.width,
-			height: image_res.height,
+			height: image_res.height
 		};
 		await group.save();
 	}
@@ -79,13 +79,7 @@ const update = async (req, res, next) => {
 const destroy = async (req, res) => {
 	const id = req.params.id;
 	await Group.findByIdAndDelete(id);
-	res.json({ message: "group deleted" });
+	res.json({ message: 'group deleted' });
 };
 
-module.exports = {
-	index,
-	store,
-	show,
-	destroy,
-	update,
-};
+export { index, store, show, destroy, update };

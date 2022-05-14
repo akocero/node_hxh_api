@@ -1,20 +1,20 @@
-const multer = require("multer");
-const path = require("path");
+import multer from 'multer';
+import path from 'path';
 
 // Multer config
-module.exports = multer({
+export default multer({
 	storage: multer.diskStorage({}),
 	fileFilter: (req, file, cb) => {
 		let ext = path.extname(file.originalname);
 		if (
-			ext !== ".jpg" &&
-			ext !== ".jpeg" &&
-			ext !== ".png" &&
-			ext !== ".webp"
+			ext !== '.jpg' &&
+			ext !== '.jpeg' &&
+			ext !== '.png' &&
+			ext !== '.webp'
 		) {
-			cb(new Error("File type is not supported"), false);
+			cb(new Error('File type is not supported'), false);
 			return;
 		}
 		cb(null, true);
-	},
+	}
 });

@@ -1,19 +1,19 @@
-const { Router } = require("express");
+import { Router } from 'express';
 const router = Router();
-const {
+import {
 	index,
 	store,
 	update,
 	show,
-	destroy,
-} = require("../controllers/character.controller");
-const { catchUnknownError } = require("../middlewares/catchUnknownError");
-const upload = require("../utils/multer");
+	destroy
+} from '../controllers/character.controller.js';
+import { catchUnknownError } from '../middlewares/catchUnknownError.js';
+import upload from '../utils/multer.js';
 
-router.get("/", index);
-router.get("/:id", catchUnknownError(show));
-router.put("/:id", upload.single("image"), catchUnknownError(update));
-router.post("/", upload.single("image"), catchUnknownError(store));
-router.delete("/:id", catchUnknownError(destroy));
+router.get('/', index);
+router.get('/:id', catchUnknownError(show));
+router.put('/:id', upload.single('image'), catchUnknownError(update));
+router.post('/', upload.single('image'), catchUnknownError(store));
+router.delete('/:id', catchUnknownError(destroy));
 
-module.exports = router;
+export default router;

@@ -1,35 +1,35 @@
-const mongoose = require("mongoose");
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const familySchema = new Schema(
 	{
 		name: {
 			type: String,
-			required: [true, "Name is required"],
-			unique: [true, "Name already excist"],
+			required: [true, 'Name is required'],
+			unique: [true, 'Name already excist']
 		},
 		image: {
 			public_id: String,
 			secure_url: String,
 			width: Number,
-			height: Number,
+			height: Number
 		},
 		leaders: [
 			{
 				leader: {
 					type: mongoose.Schema.Types.ObjectId,
-					ref: "Character",
+					ref: 'Character'
 				},
-				leader_details: String,
-			},
+				leader_details: String
+			}
 		],
 		description: {
-			type: String,
-		},
+			type: String
+		}
 	},
 	{ timestamps: true }
 );
 
-const Family = mongoose.model("Family", familySchema);
+const Family = mongoose.model('Family', familySchema);
 
-module.exports = Family;
+export default Family;
