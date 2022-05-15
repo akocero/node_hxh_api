@@ -1,7 +1,6 @@
 import express, { json, urlencoded } from 'express';
 import 'dotenv/config';
 import connectDB from './config/db.js';
-const port = process.env.PORT || 5000;
 import cors from 'cors';
 import { errorHandler } from './middlewares/errorHandler.js';
 // routes
@@ -34,5 +33,5 @@ app.use((req, res, next) => {
 });
 
 app.use(errorHandler);
-
+const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Server started on port ${port}`));

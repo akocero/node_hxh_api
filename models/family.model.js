@@ -6,28 +6,28 @@ const familySchema = new Schema(
 		name: {
 			type: String,
 			required: [true, 'Name is required'],
-			unique: [true, 'Name already excist']
+			unique: [true, 'Name already excist'],
 		},
 		image: {
 			public_id: String,
 			secure_url: String,
 			width: Number,
-			height: Number
+			height: Number,
 		},
 		leaders: [
 			{
 				leader: {
-					type: mongoose.Schema.Types.ObjectId,
-					ref: 'Character'
+					type: Schema.Types.ObjectId,
+					ref: 'Character',
 				},
-				leader_details: String
-			}
+				leader_details: String,
+			},
 		],
 		description: {
-			type: String
-		}
+			type: String,
+		},
 	},
-	{ timestamps: true }
+	{ timestamps: true },
 );
 
 const Family = mongoose.model('Family', familySchema);
