@@ -7,7 +7,11 @@ const index = async (req, res) => {
 		.sort({ createdAt: -1 })
 		.select('-createdAt -updatedAt -__v')
 		.populate('relatives.relative', 'name');
-	res.status(200).json(characters);
+	res.status(200).json({
+		status: 200,
+		results: characters.length,
+		data: characters
+	});
 };
 
 const show = async (req, res, next) => {
