@@ -8,6 +8,7 @@ import characterRoutes from './routes/character.routes.js';
 import userRoutes from './routes/user.routes.js';
 import familyRoutes from './routes/family.routes.js';
 import groupRoutes from './routes/group.routes.js';
+import templateRoutes from './routes/template.routes.js';
 
 connectDB();
 
@@ -25,6 +26,7 @@ app.use('/api/characters', characterRoutes);
 app.use('/api/auth', userRoutes);
 app.use('/api/families', familyRoutes);
 app.use('/api/groups', groupRoutes);
+app.use('/api/l4l_templates', templateRoutes);
 
 app.use((req, res, next) => {
 	const error = new Error('Not Found');
