@@ -1,14 +1,11 @@
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
-const templateSchema = new Schema(
+const orderSchema = new Schema(
 	{
 		customer: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'Customer',
-		},
-		product_id: {
-			type: String,
 		},
 		body: {
 			type: String,
@@ -17,6 +14,6 @@ const templateSchema = new Schema(
 	{ timestamps: true },
 );
 
-const Template = mongoose.model('Template', templateSchema);
+const Order = mongoose.model('Order', orderSchema);
 
-export default Template;
+export default Order;

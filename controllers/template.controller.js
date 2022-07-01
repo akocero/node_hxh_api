@@ -1,10 +1,12 @@
 import Template from '../models/template.model.js';
+import Customer from '../models/customer.model.js';
 import { createError } from '../utils/createError.js';
 
 const index = async (req, res) => {
 	const templates = await Template.find()
 		.sort({ createdAt: -1 })
-		.select('-__v');
+		.select('-__v')
+		.populate('customer');
 	res.status(200).json(templates);
 };
 
@@ -27,10 +29,19 @@ const store = async (req, res, next) => {
 		...req.body,
 	});
 
+	Customer.findByIdAndUpdate(
+		req.body.customer_id,
+		{ $push: { templates: template._id } },
+		{ new: true },
+		(err, post) => {
+			if (err) res.send(err);
+			res.status(200).json(template);
+		},
+	);
+
 	// res.json(req.body);
 
 	// res.redirect("/templates");
-	res.status(200).json(template);
 };
 
 const update = async (req, res, next) => {
