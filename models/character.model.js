@@ -1,6 +1,15 @@
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
+/* Important Comment 
+	if you want a two unique fields you need to create the schema fields
+	on the same time,
+
+	or
+	
+	delete the existing duplicates for it to work 
+*/
+
 const isValidNenType = (val) => {
 	let valid = true;
 	const nen_types = [
@@ -10,7 +19,7 @@ const isValidNenType = (val) => {
 		'specialization',
 		'conjuration',
 		'transmutation',
-		'unknown'
+		'unknown',
 	];
 
 	val.forEach((item) => {
@@ -28,66 +37,63 @@ const characterSchema = new Schema(
 		name: {
 			type: String,
 			required: [true, 'Name is required'],
-			unique: [true, 'Name already excist']
-		},
-		also_known_as: {
-			type: Array
+			unique: [true, 'Name already exist'],
 		},
 		gender: {
 			type: String,
-			required: [true, 'Gender is required']
+			required: [true, 'Gender is required'],
 		},
 		nen_type: {
 			type: Array,
-			validate: [isValidNenType, 'Nen-type is not valid']
+			validate: [isValidNenType, 'Nen-type is not valid'],
 		},
 		image: {
 			public_id: String,
 			secure_url: String,
 			width: Number,
-			height: Number
+			height: Number,
 		},
 		abilities: {
-			type: Array
+			type: Array,
 		},
 		japanese_name: {
-			type: String
+			type: String,
 		},
 		affiliations: [
 			{
 				type: mongoose.Schema.Types.ObjectId,
-				ref: 'Group'
-			}
+				ref: 'Group',
+			},
 		],
 		professions: {
 			type: Array,
-			required: [true, 'Profession is required']
+			required: [true, 'Profession is required'],
 		},
 		state: {
 			type: String,
-			required: [true, 'State is required']
+			required: [true, 'State is required'],
 		},
 		relatives: [
 			{
 				relative: {
 					type: mongoose.Schema.Types.ObjectId,
-					ref: 'Character'
+					ref: 'Character',
 				},
-				relationship: String
-			}
+				relationship: String,
+			},
 		],
 		descriptions: {
-			type: String
+			type: String,
 		},
 		hunter_star: {
-			type: Number
+			type: Number,
 		},
 		family: {
 			type: mongoose.Schema.Types.ObjectId,
-			ref: 'Family'
-		}
+			ref: 'Family',
+		},
 	},
-	{ timestamps: true }
+	{ timestamps: true },
 );
 
 export default mongoose.model('Character', characterSchema);
