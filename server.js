@@ -1,43 +1,31 @@
-import express, { json, urlencoded } from 'express';
 import 'dotenv/config';
+import app from './app.js';
 import connectDB from './config/db.js';
-import cors from 'cors';
-import { errorHandler } from './middlewares/errorHandler.js';
-// routes
-import characterRoutes from './routes/character.routes.js';
-import userRoutes from './routes/user.routes.js';
-import familyRoutes from './routes/family.routes.js';
-import groupRoutes from './routes/group.routes.js';
-import templateRoutes from './routes/template.routes.js';
-import orderRoutes from './routes/order.routes.js';
-import customerRoutes from './routes/customer.routes.js';
+
+process.on('uncaughtException', (err) => {
+	console.log('UNCAUGHT EXCEPTION! 💥 Shutting down...');
+	console.log(err.name, err.message);
+	process.exit(1);
+});
 
 connectDB();
 
-const app = express();
-app.use(cors());
-
-app.get('/', (req, res, next) => {
-	res.redirect('https://hxh-api.vercel.app/');
-});
-
-app.use(json());
-app.use(urlencoded({ extended: false }));
-
-app.use('/api/characters', characterRoutes);
-app.use('/api/auth', userRoutes);
-app.use('/api/families', familyRoutes);
-app.use('/api/groups', groupRoutes);
-app.use('/api/orders', orderRoutes);
-app.use('/api/customers', customerRoutes);
-app.use('/api/templates', templateRoutes);
-
-app.use((req, res, next) => {
-	const error = new Error('Not Found');
-	error.status = 404;
-	next(error);
-});
-
-app.use(errorHandler);
 const port = process.env.PORT || 5000;
-app.listen(port, () => console.log(`Server started on port ${port}`));
+const server = app.listen(port, () => {
+	console.log(`App running on port ${port}...`);
+});
+
+process.on('unhandledRejection', (err) => {
+	console.log('UNHANDLED REJECTION! 💥 Shutting down...');
+	console.log(err.name, err.message);
+	server.close(() => {
+		process.exit(1);
+	});
+});
+
+process.on('SIGTERM', () => {
+	console.log('👋 SIGTERM RECEIVED. Shutting down gracefully');
+	server.close(() => {
+		console.log('💥 Process terminated!');
+	});
+});
