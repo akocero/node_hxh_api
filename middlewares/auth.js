@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/user.model.js';
 import { createError } from '../utils/createError.js';
-
+import AppError from '../utils/appError.js';
 export const auth = async (req, res, next) => {
 	let token;
 
@@ -18,16 +18,16 @@ export const auth = async (req, res, next) => {
 
 			// Get user from the token
 			req.user = await User.findById(decoded.id).select(
-				'-password -createdAt -updatedAt -__v'
+				'-password -createdAt -updatedAt -__v',
 			);
 
 			next();
 		} catch (error) {
-			return next(createError(401, 'Unauthorized'));
+			return next(new AppError('Unauthorized', 401));
 		}
 	}
 
 	if (!token) {
-		return next(createError(403, 'Forbidden'));
+		return next(new AppError('Forbidden', 403));
 	}
 };
