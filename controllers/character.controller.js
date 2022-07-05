@@ -1,16 +1,25 @@
 import Character from '../models/character.model.js';
-import { createError } from '../utils/createError.js';
 import cloudinary from '../utils/cloudinary.js';
+import QueryBuilder from '../utils/queryBuilder.js';
+import AppError from '../utils/appError.js';
 
 const index = async (req, res) => {
-	const characters = await Character.find()
-		.sort({ createdAt: -1 })
-		.select('-createdAt -updatedAt -__v')
-		.populate('relatives.relative', 'name');
+	let queryString = req.query;
+
+	let features = new QueryBuilder(Character.find(), queryString)
+		.filter()
+		.sort()
+		.limitFields()
+		.paginate();
+
+	const characters = await features.query.populate(
+		'relatives.relative',
+		'name',
+	);
 	res.status(200).json({
-		status: 200,
+		status: 'success',
 		results: characters.length,
-		data: characters
+		data: characters,
 	});
 };
 
@@ -19,33 +28,32 @@ const show = async (req, res, next) => {
 
 	const character = await Character.findById(id).populate(
 		'relatives',
-		'name'
+		'name',
 	);
 
 	if (!character) {
-		return next(createError(404, 'Character Not Found'));
+		return next(new AppError('No document found with that ID', 404));
 	}
-	res.status(200).json(character);
 
-	// res.render("details", { title: "Details", character });
+	res.status(200).json(character);
 };
 
 const store = async (req, res, next) => {
 	const character = await Character.create({
-		...req.body
+		...req.body,
 	});
 
 	// res.json(req.body);
 	if (req.file && character) {
 		const image_res = await cloudinary.uploader.upload(req.file.path, {
-			upload_preset: 'hxh-api'
+			upload_preset: 'hxh-api',
 		});
 		console.log(image_res);
 		character.image = {
 			public_id: image_res.public_id,
 			secure_url: image_res.secure_url,
 			width: image_res.width,
-			height: image_res.height
+			height: image_res.height,
 		};
 		await character.save();
 	}
@@ -58,7 +66,7 @@ const update = async (req, res, next) => {
 	const character = await Character.findOneAndUpdate(
 		{ _id: req.params.id },
 		{ $set: req.body },
-		{ new: true, runValidators: true }
+		{ new: true, runValidators: true },
 	);
 
 	if (req.file && character && character.image) {
@@ -67,14 +75,14 @@ const update = async (req, res, next) => {
 
 	if (req.file && character) {
 		const image_res = await cloudinary.uploader.upload(req.file.path, {
-			upload_preset: 'hxh-api'
+			upload_preset: 'hxh-api',
 		});
 		console.log(image_res);
 		character.image = {
 			public_id: image_res.public_id,
 			secure_url: image_res.secure_url,
 			width: image_res.width,
-			height: image_res.height
+			height: image_res.height,
 		};
 		await character.save();
 	}
