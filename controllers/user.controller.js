@@ -2,19 +2,20 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import User from '../models/user.model.js';
 import { createError } from '../utils/createError.js';
+import AppError from '../utils/appError.js';
 
 const register = async (req, res, next) => {
 	const { name, email, password } = req.body;
 
-	// if (!name || !email || !password) {
-	// 	return next(createError(400, "Please add all fields"));
-	// }
+	if (!name || !email || !password) {
+		return next(new AppError('Invalid inputs', 400));
+	}
 
 	// Check if user exists
 	const userExists = await User.findOne({ email });
 
 	if (userExists) {
-		return next(createError(400, 'User already exists'));
+		return next(new AppError('User already exist', 400));
 	}
 
 	// Hash password
@@ -25,7 +26,7 @@ const register = async (req, res, next) => {
 	const user = await User.create({
 		name,
 		email,
-		password: hashedPassword
+		password: hashedPassword,
 	});
 
 	if (user) {
@@ -33,10 +34,10 @@ const register = async (req, res, next) => {
 			_id: user.id,
 			name: user.name,
 			email: user.email,
-			token: generateToken(user._id)
+			token: generateToken(user._id),
 		});
 	} else {
-		return next(createError(400, 'Invalid user data'));
+		return next(new AppError('Invalid inputs', 404));
 	}
 };
 
@@ -44,18 +45,24 @@ const login = async (req, res, next) => {
 	const { email, password } = req.body;
 
 	// Check for user email
-	const user = await User.findOne({ email });
+	const user = await User.findOne({ email }).select('+password');
 
-	if (user && (await bcrypt.compare(password, user.password))) {
-		res.json({
-			_id: user.id,
-			name: user.name,
-			email: user.email,
-			token: generateToken(user._id)
-		});
-	} else {
-		return next(createError(400, 'Invalid credentials'));
+	if (!user) {
+		return next(new AppError('Incorrect email or password', 401));
 	}
+	// user.correctPassword you can found this method on user model
+	const correctPassword = await user.correctPassword(password, user.password);
+
+	if (!correctPassword) {
+		return next(new AppError('Incorrect email or password', 401));
+	}
+
+	res.json({
+		_id: user.id,
+		name: user.name,
+		email: user.email,
+		token: generateToken(user._id),
+	});
 };
 
 const me = async (req, res) => {
@@ -65,7 +72,7 @@ const me = async (req, res) => {
 // Generate JWT
 const generateToken = (id) => {
 	return jwt.sign({ id }, process.env.JWT_SECRET, {
-		expiresIn: '30d'
+		expiresIn: process.env.JWT_EXPIRES_IN,
 	});
 };
 
