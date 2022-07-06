@@ -78,6 +78,12 @@ export default (err, req, res, next) => {
 			error = handleValidationErrorDB(error);
 		if (err.expose) error = handleBadJSONFormat(error);
 
+		if (err.name === 'JsonWebTokenError')
+			error = new AppError('Unauthorized', 401);
+
+		if (err.name === 'TokenExpiredError')
+			error = new AppError('Expired Token', 401);
+
 		dispatchProductionError(error, req, res);
 	}
 };
