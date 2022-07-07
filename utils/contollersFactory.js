@@ -1,8 +1,9 @@
 import { catchUnknownError } from '../middlewares/catchUnknownError.js';
 import QueryBuilder from '../utils/queryBuilder.js';
 import AppError from '../utils/appError.js';
+import cloudinary from '../utils/cloudinary.js';
 
-const index = (Model, populateObject) =>
+const index = (Model, ...populateObject) =>
 	catchUnknownError(async (req, res) => {
 		let queryString = req.query;
 
@@ -27,18 +28,18 @@ const index = (Model, populateObject) =>
 		});
 	});
 
-const store = (Model) =>
+const store = (Model, uploadImage = false) =>
 	catchUnknownError(async (req, res, next) => {
 		const doc = await Model.create({
 			...req.body,
 		});
 
 		// res.json(req.body);
-		if (req.file && doc) {
+
+		if (uploadImage && req.file && doc) {
 			const image_res = await cloudinary.uploader.upload(req.file.path, {
 				upload_preset: 'hxh-api',
 			});
-			console.log(image_res);
 			doc.image = {
 				public_id: image_res.public_id,
 				secure_url: image_res.secure_url,
@@ -55,13 +56,13 @@ const store = (Model) =>
 		});
 	});
 
-const show = (Model, populateObject) =>
+const show = (Model, ...populateObject) =>
 	catchUnknownError(async (req, res, next) => {
 		const id = req.params.id;
-
 		const doc = populateObject
 			? await Model.findById(id).select('-__v').populate(populateObject)
 			: await Model.findById(id).select('-__v');
+
 		// const doc = await Model.findById(id).populate('relatives', 'name');
 
 		if (!doc) {
@@ -76,16 +77,56 @@ const show = (Model, populateObject) =>
 		});
 	});
 
+const update = (Model, uploadImage = false) =>
+	catchUnknownError(async (req, res, next) => {
+		const doc = await Model.findByIdAndUpdate(req.params.id, req.body, {
+			new: true,
+			runValidators: true,
+		});
+		console.log(req.params.id);
+		if (!doc) {
+			return next(new AppError('No document found with that ID', 404));
+		}
+
+		if (uploadImage && req.file && doc && doc?.image?.public_id) {
+			console.log(doc.image);
+			await cloudinary.uploader.destroy(doc.image.public_id);
+		}
+
+		if (uploadImage && req.file && doc) {
+			const image_res = await cloudinary.uploader.upload(req.file.path, {
+				upload_preset: 'hxh-api',
+			});
+
+			doc.image = {
+				public_id: image_res.public_id,
+				secure_url: image_res.secure_url,
+				width: image_res.width,
+				height: image_res.height,
+			};
+			await doc.save();
+		}
+
+		res.status(200).json(doc);
+	});
+
 const destroy = (Model) =>
 	catchUnknownError(async (req, res, next) => {
 		const id = req.params.id;
 		const doc = await Model.findByIdAndDelete(id);
+
 		if (!doc) {
 			return next(
 				new AppError(`No document found with this ${id} ID`, 404),
 			);
 		}
+
+		if (doc?.image?.public_id) {
+			console.log(doc.image);
+			await cloudinary.uploader.destroy(doc.image.public_id);
+		}
+
 		res.status(204).json({});
 	});
 
-export default { index, show, store, destroy };
+export default { index, show, store, destroy, update };
