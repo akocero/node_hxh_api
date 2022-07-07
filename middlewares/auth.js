@@ -13,7 +13,7 @@ const protect = catchUnknownError(async (req, res, next) => {
 		// Get token from header
 		token = req.headers.authorization.split(' ')[1];
 	}
-
+	// console.log(req.headers);
 	if (!token) {
 		return next(new AppError('Forbidden', 403));
 	}
@@ -30,15 +30,12 @@ const protect = catchUnknownError(async (req, res, next) => {
 		return next(new AppError('Unauthorized', 401));
 	}
 
-	console.log(authenticatedUser);
-
 	req.user = authenticatedUser;
 	next();
 });
 
 const restrictedTo = (...roles) => {
 	return (req, res, next) => {
-		console.log(req.user);
 		if (!roles.includes(req.user.role)) {
 			return next(
 				new AppError(
