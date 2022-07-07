@@ -5,15 +5,15 @@ import {
 	store,
 	update,
 	show,
-	destroy
+	destroy,
 } from '../controllers/group.controller.js';
-import { catchUnknownError } from '../middlewares/catchUnknownError.js';
 import upload from '../utils/multer.js';
+import auth from '../middlewares/auth.js';
 
-router.get('/', index);
-router.get('/:id', catchUnknownError(show));
-router.put('/:id', upload.single('image'), catchUnknownError(update));
-router.post('/', upload.single('image'), catchUnknownError(store));
-router.delete('/:id', catchUnknownError(destroy));
+router.get('/', auth.protect, index);
+router.get('/:id', auth.protect, show);
+router.patch('/:id', auth.protect, upload.single('image'), update);
+router.post('/', auth.protect, upload.single('image'), store);
+router.delete('/:id', auth.protect, auth.restrictedTo('admin'), destroy);
 
 export default router;
