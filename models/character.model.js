@@ -39,6 +39,9 @@ const characterSchema = new Schema(
 			required: [true, 'Name is required'],
 			unique: [true, 'Name already exist'],
 		},
+		also_known_as: {
+			type: Array,
+		},
 		gender: {
 			type: String,
 			required: [true, 'Gender is required'],
@@ -66,8 +69,11 @@ const characterSchema = new Schema(
 			},
 		],
 		professions: {
-			type: Array,
-			required: [true, 'Profession is required'],
+			type: [String],
+			validate: [
+				(v) => Array.isArray(v) && v.length > 0,
+				'Professions is required',
+			],
 		},
 		state: {
 			type: String,
