@@ -6,40 +6,40 @@ const groupSchema = new Schema(
 		name: {
 			type: String,
 			required: [true, 'Name is required'],
-			unique: [true, 'Name already excist']
+			unique: [true, 'Name already excist'],
 		},
 		also_known_as: {
-			type: Array
+			type: [String],
 		},
 		image: {
 			public_id: String,
 			secure_url: String,
 			width: Number,
-			height: Number
+			height: Number,
 		},
 		leaders: [
 			{
 				leader: {
 					type: mongoose.Schema.Types.ObjectId,
-					ref: 'Character'
+					ref: 'Character',
 				},
-				leader_details: String
-			}
+				leader_details: String,
+			},
 		],
 		status: {
-			type: String
+			type: String,
 		},
 		classification: {
-			type: String
+			type: String,
 		},
 		base_of_operations: {
-			type: Array
+			type: Array,
 		},
 		description: {
-			type: String
-		}
+			type: String,
+		},
 	},
-	{ timestamps: true }
+	{ timestamps: true },
 );
 
 export default mongoose.model('Group', groupSchema);
