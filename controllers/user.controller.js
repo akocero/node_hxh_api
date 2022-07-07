@@ -37,23 +37,21 @@ const register = async (req, res, next) => {
 			token: generateToken(user._id),
 		});
 	} else {
-		return next(new AppError('Invalid inputs', 404));
+		return next(new AppError('Invalid inputs', 400));
 	}
 };
 
 const login = async (req, res, next) => {
 	const { email, password } = req.body;
 
+	if (!email || !password) {
+		return next(new AppError('Invalid inputs', 400));
+	}
+
 	// Check for user email
 	const user = await User.findOne({ email }).select('+password');
 
-	if (!user) {
-		return next(new AppError('Incorrect email or password', 401));
-	}
-	// user.correctPassword you can found this method on user model
-	const correctPassword = await user.correctPassword(password, user.password);
-
-	if (!correctPassword) {
+	if (!user || !(await user.correctPassword(password, user.password))) {
 		return next(new AppError('Incorrect email or password', 401));
 	}
 
