@@ -15,7 +15,7 @@ const protect = catchUnknownError(async (req, res, next) => {
 	}
 	// console.log(req.headers);
 	if (!token) {
-		return next(new AppError('Forbidden', 403));
+		return next(new AppError('Forbidden: No provided token', 403));
 	}
 
 	// Verify token
@@ -27,7 +27,21 @@ const protect = catchUnknownError(async (req, res, next) => {
 	);
 
 	if (!authenticatedUser) {
-		return next(new AppError('Unauthorized', 401));
+		return next(
+			new AppError(
+				'The user belonging to this token does no longer exist.',
+				401,
+			),
+		);
+	}
+
+	if (authenticatedUser.changedPasswordAfter(decoded.iat)) {
+		return next(
+			new AppError(
+				'User recently changed password! Please log in again.',
+				401,
+			),
+		);
 	}
 
 	req.user = authenticatedUser;
