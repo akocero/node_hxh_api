@@ -11,6 +11,14 @@ const generateToken = (id) => {
 	});
 };
 
+const filterObj = (obj, ...allowedFields) => {
+	const newObj = {};
+	Object.keys(obj).forEach((el) => {
+		if (allowedFields.includes(el)) newObj[el] = obj[el];
+	});
+	return newObj;
+};
+
 const forgotPassword = async (req, res, next) => {
 	const user = await User.findOne({ email: req.body.email });
 	if (!user) {
@@ -18,6 +26,7 @@ const forgotPassword = async (req, res, next) => {
 	}
 
 	const resetToken = user.createPasswordResetToken();
+	// saving user details without validation
 	user.save({ validateBeforeSave: false });
 
 	const resetURL = `${req.protocol}://${req.get(
@@ -50,6 +59,43 @@ const forgotPassword = async (req, res, next) => {
 			),
 		);
 	}
+};
+
+const deactivateMe = async (req, res, next) => {
+	await User.findByIdAndUpdate(req.user.id, { active: false });
+
+	res.status(204).json({
+		status: 'success',
+		data: null,
+	});
+};
+
+const updateMe = async (req, res, next) => {
+	if (req.body.password || req.body.passwordConfirm) {
+		return next(
+			new AppError(
+				'You added forbidden field, The admin will contact you!',
+				400,
+			),
+		);
+	}
+
+	const filteredBody = filterObj(req.body, 'name', 'email');
+	// if (req.file) filteredBody.photo = req.file.filename; for photos
+
+	const updatedUser = await User.findByIdAndUpdate(
+		req.user.id,
+		filteredBody,
+		{
+			new: true,
+			runValidators: true,
+		},
+	);
+
+	res.status(200).json({
+		status: 'success',
+		data: updatedUser,
+	});
 };
 
 const resetPassword = async (req, res, next) => {
@@ -95,7 +141,7 @@ const resetPassword = async (req, res, next) => {
 const register = async (req, res, next) => {
 	const { name, email, password, passwordConfirm } = req.body;
 
-	if (!name || !email || !password) {
+	if (!name || !email || !password || !passwordConfirm) {
 		return next(new AppError('Invalid inputs', 400));
 	}
 
@@ -176,4 +222,13 @@ const updatePassword = async (req, res, next) => {
 	});
 };
 
-export { register, login, me, forgotPassword, resetPassword, updatePassword };
+export {
+	register,
+	login,
+	me,
+	forgotPassword,
+	resetPassword,
+	updatePassword,
+	updateMe,
+	deactivateMe,
+};
