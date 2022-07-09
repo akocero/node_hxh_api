@@ -18,7 +18,7 @@ const forgotPassword = async (req, res, next) => {
 	}
 
 	const resetToken = user.createPasswordResetToken();
-	user.save();
+	user.save({ validateBeforeSave: false });
 
 	const resetURL = `${req.protocol}://${req.get(
 		'host',
@@ -53,6 +53,12 @@ const forgotPassword = async (req, res, next) => {
 };
 
 const resetPassword = async (req, res, next) => {
+	const { password, passwordConfirm } = req.body;
+
+	if (!password || !passwordConfirm) {
+		return next(new AppError('Invalid Inputs!', 400));
+	}
+
 	const hashedToken = crypto
 		.createHash('sha256')
 		.update(req.params.token)
@@ -64,9 +70,6 @@ const resetPassword = async (req, res, next) => {
 	});
 
 	if (!user) {
-		user.passwordResetToken = undefined;
-		user.passwordResetExpires = undefined;
-		await user.save();
 		return next(
 			new AppError('Token is invalid or expired, Please try again!', 400),
 		);
@@ -76,11 +79,8 @@ const resetPassword = async (req, res, next) => {
 		return next(new AppError('Please provide a new password!', 400));
 	}
 
-	const salt = await bcrypt.genSalt(10);
-	const hashedPassword = await bcrypt.hash(req.body.password, salt);
-
-	user.password = hashedPassword;
-
+	user.password = password;
+	user.passwordConfirm = passwordConfirm;
 	user.passwordResetToken = undefined;
 	user.passwordResetExpires = undefined;
 
@@ -93,7 +93,7 @@ const resetPassword = async (req, res, next) => {
 };
 
 const register = async (req, res, next) => {
-	const { name, email, password } = req.body;
+	const { name, email, password, passwordConfirm } = req.body;
 
 	if (!name || !email || !password) {
 		return next(new AppError('Invalid inputs', 400));
@@ -105,13 +105,11 @@ const register = async (req, res, next) => {
 		return next(new AppError('User already exist', 400));
 	}
 
-	const salt = await bcrypt.genSalt(10);
-	const hashedPassword = await bcrypt.hash(password, salt);
-
 	const user = await User.create({
 		name,
 		email,
-		password: hashedPassword,
+		password,
+		passwordConfirm,
 	});
 
 	if (!user) {
@@ -152,9 +150,9 @@ const me = async (req, res) => {
 };
 
 const updatePassword = async (req, res, next) => {
-	const { newPassword, password } = req.body;
+	const { newPassword, password, passwordConfirm } = req.body;
 
-	if (!newPassword || !password) {
+	if (!newPassword || !password || !passwordConfirm) {
 		return next(new AppError('Invalid Inputs', 400));
 	}
 
@@ -166,11 +164,9 @@ const updatePassword = async (req, res, next) => {
 		return next(new AppError('Your current password is wrong', 400));
 	}
 
-	const salt = await bcrypt.genSalt(10);
-	const hashedPassword = await bcrypt.hash(newPassword, salt);
-
-	user.password = hashedPassword;
-	await user.save({ validateBeforeSave: false });
+	user.password = newPassword;
+	user.passwordConfirm = passwordConfirm;
+	await user.save();
 
 	res.json({
 		_id: user.id,

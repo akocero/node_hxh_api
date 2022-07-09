@@ -25,6 +25,17 @@ const userSchema = mongoose.Schema(
 			required: [true, 'Please add a password'],
 			select: false,
 		},
+		passwordConfirm: {
+			type: String,
+			required: [true, 'Please confirm your password'],
+			validate: {
+				// This only works on CREATE and SAVE!!!
+				validator: function (el) {
+					return el === this.password;
+				},
+				message: 'Passwords are not the same!',
+			},
+		},
 		passwordChangedAt: Date,
 		passwordResetToken: String,
 		passwordResetExpires: Date,
@@ -38,6 +49,18 @@ const userSchema = mongoose.Schema(
 		timestamps: true,
 	},
 );
+
+userSchema.pre('save', async function (next) {
+	// Only run this function if password was actually modified
+	if (!this.isModified('password')) return next();
+
+	const salt = await bcrypt.genSalt(10);
+	this.password = await bcrypt.hash(this.password, salt);
+
+	// Delete passwordConfirm field
+	this.passwordConfirm = undefined;
+	next();
+});
 
 userSchema.methods.comparePassword = async function (
 	candidatePassword,
@@ -54,9 +77,7 @@ userSchema.methods.createPasswordResetToken = function () {
 		.update(resetToken)
 		.digest('hex');
 
-	console.log({ resetToken }, this.passwordResetToken);
-
-	this.passwordResetExpires = Date.now() + 1 * 60 * 1000;
+	this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
 
 	return resetToken;
 };
