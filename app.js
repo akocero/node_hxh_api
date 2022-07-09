@@ -6,6 +6,7 @@ import cors from 'cors';
 // routes
 import characterRouter from './routes/character.routes.js';
 import userRouter from './routes/user.routes.js';
+import authRouter from './routes/auth.routes.js';
 import familyRouter from './routes/family.routes.js';
 import groupRouter from './routes/group.routes.js';
 
@@ -29,7 +30,8 @@ app.use(json());
 app.use(urlencoded({ extended: false }));
 
 app.use('/api/v1/characters', characterRouter);
-app.use('/api/v1/auth', userRouter);
+app.use('/api/v1/users', userRouter);
+app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/families', familyRouter);
 app.use('/api/v1/groups', groupRouter);
 
