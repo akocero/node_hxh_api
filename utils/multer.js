@@ -1,5 +1,6 @@
 import multer from 'multer';
 import path from 'path';
+import AppError from './appError.js';
 
 // Multer config
 export default multer({
@@ -12,9 +13,9 @@ export default multer({
 			ext !== '.png' &&
 			ext !== '.webp'
 		) {
-			cb(new Error('File type is not supported'), false);
+			cb(new AppError('File type is not supported', 400), false);
 			return;
 		}
 		cb(null, true);
-	}
+	},
 });
