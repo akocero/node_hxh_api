@@ -17,7 +17,7 @@ const userSchema = mongoose.Schema(
 		},
 		role: {
 			type: String,
-			enum: ['user'],
+			enum: ['user', 'admin'],
 			default: 'user',
 		},
 		password: {
@@ -39,7 +39,7 @@ const userSchema = mongoose.Schema(
 	},
 );
 
-userSchema.methods.correctPassword = async function (
+userSchema.methods.comparePassword = async function (
 	candidatePassword,
 	userPassword,
 ) {

@@ -5,6 +5,12 @@ import AppError from '../utils/appError.js';
 import sendEmail from '../utils/email.js';
 import crypto from 'crypto';
 
+const generateToken = (id) => {
+	return jwt.sign({ id }, process.env.JWT_SECRET, {
+		expiresIn: process.env.JWT_EXPIRES_IN,
+	});
+};
+
 const forgotPassword = async (req, res, next) => {
 	const user = await User.findOne({ email: req.body.email });
 	if (!user) {
@@ -35,7 +41,7 @@ const forgotPassword = async (req, res, next) => {
 		user.passwordResetToken = undefined;
 		user.passwordResetExpires = undefined;
 
-		await user.save();
+		await user.save({ validateBeforeSave: false });
 
 		return next(
 			new AppError(
@@ -129,7 +135,7 @@ const login = async (req, res, next) => {
 
 	const user = await User.findOne({ email }).select('+password');
 
-	if (!user || !(await user.correctPassword(password, user.password))) {
+	if (!user || !(await user.comparePassword(password, user.password))) {
 		return next(new AppError('Incorrect email or password', 401));
 	}
 
@@ -145,10 +151,33 @@ const me = async (req, res) => {
 	res.status(200).json(req.user);
 };
 
-const generateToken = (id) => {
-	return jwt.sign({ id }, process.env.JWT_SECRET, {
-		expiresIn: process.env.JWT_EXPIRES_IN,
+const updatePassword = async (req, res, next) => {
+	const { newPassword, password } = req.body;
+
+	if (!newPassword || !password) {
+		return next(new AppError('Invalid Inputs', 400));
+	}
+
+	const user = await User.findById(req.user.id).select('+password');
+
+	const correctPassword = await user.comparePassword(password, user.password);
+
+	if (!correctPassword) {
+		return next(new AppError('Your current password is wrong', 400));
+	}
+
+	const salt = await bcrypt.genSalt(10);
+	const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+	user.password = hashedPassword;
+	await user.save({ validateBeforeSave: false });
+
+	res.json({
+		_id: user.id,
+		name: user.name,
+		email: user.email,
+		token: generateToken(user._id),
 	});
 };
 
-export { register, login, me, forgotPassword, resetPassword };
+export { register, login, me, forgotPassword, resetPassword, updatePassword };
