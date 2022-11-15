@@ -5,7 +5,7 @@ import {
 	store,
 	update,
 	show,
-	destroy
+	destroy,
 } from '../controllers/family.controller.js';
 import { catchUnknownError } from '../middlewares/catchUnknownError.js';
 import upload from '../utils/multer.js';
