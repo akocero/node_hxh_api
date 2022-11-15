@@ -10,7 +10,7 @@ import {
 import upload from '../utils/multer.js';
 import auth from '../middlewares/auth.js';
 
-router.get('/', auth.protect, index);
+router.get('/', index);
 router.get('/:id', auth.protect, show);
 router.patch('/:id', auth.protect, upload.single('image'), update);
 router.post('/', auth.protect, upload.single('image'), store);
