@@ -1,5 +1,6 @@
 class QueryBuilder {
 	constructor(query, queryString) {
+		this.filteredData = false;
 		this.query = query;
 		this.queryString = queryString;
 	}
@@ -12,9 +13,13 @@ class QueryBuilder {
 		// 1B) Advanced filtering
 		let queryStr = JSON.stringify(queryObj);
 		queryStr = queryStr.replace(
-			/\b(gte|gt|lte|lt)\b/g,
+			/\b(gte|gt|lte|lt|regex)\b/g,
 			(match) => `$${match}`,
 		);
+
+		if (queryStr !== '{}') {
+			this.filteredData = JSON.parse(queryStr);
+		}
 
 		this.query = this.query.find(JSON.parse(queryStr));
 

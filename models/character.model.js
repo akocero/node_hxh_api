@@ -38,6 +38,8 @@ const characterSchema = new Schema(
 			type: String,
 			required: [true, 'Name is required'],
 			unique: [true, 'Name already exist'],
+			lowercase: true, 
+			trim: true
 		},
 		also_known_as: {
 			type: Array,
