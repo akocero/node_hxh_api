@@ -1,11 +1,10 @@
-require('dotenv').config();
-// import app from './app.js';
-const connectDB = require('./config/db');
-const app = require('./src/app.js');
+import 'dotenv/config';
+import app from './app.js';
+import connectDB from './config/db.js';
 
 process.on('uncaughtException', (err) => {
 	console.log('UNCAUGHT EXCEPTION! 💥 Shutting down...');
-	console.log(err, err.message);
+	console.log(err.name, err.message);
 	process.exit(1);
 });
 
@@ -18,7 +17,7 @@ const server = app.listen(port, () => {
 
 process.on('unhandledRejection', (err) => {
 	console.log('UNHANDLED REJECTION! 💥 Shutting down...');
-	console.log(err, err.message);
+	console.log(err.name, err.message);
 	server.close(() => {
 		process.exit(1);
 	});

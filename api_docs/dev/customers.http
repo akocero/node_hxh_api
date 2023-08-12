@@ -1,0 +1,42 @@
+@hostname = http://localhost:4000/api/v1
+#@hostname = https://demo-smatera.bellyeah.jp/api/v1
+@endpoint = /customers
+@token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0Y2Y1NjU2Mjc0N2M4YTJhYzNmNmE5YyIsImlhdCI6MTY5MTgwNTMyNSwiZXhwIjoxNjkxODkxNzI1fQ.PPodwiOmXIEOh2TA_ihCQ7tLy7DOqqIQ4o31iMRaRoA
+
+GET {{hostname}}{{endpoint}}?page=1&limit=2
+content-type: application/json
+Authorization: {{token}}
+###
+
+GET {{hostname}}{{endpoint}}/6401f24b3c3d5cb4e6303ff0
+content-type: application/json
+Authorization: {{token}}
+
+###
+POST {{hostname}}{{endpoint}}
+content-type: application/json
+Authorization: {{token}}
+
+{
+    "mobileNumber": "092",
+    "email": "email@gmail2.com",
+    "lastName": "Mil",
+    "firstName": "Ez"
+}
+
+###
+PATCH {{hostname}}{{endpoint}}/6401f24b3c3d5cb4e6303ff0
+content-type: application/json
+Authorization: {{token}}
+
+{
+    "mobileNumber": "09233",
+    "email": "email@gmail3.com",
+    "lastName": "Mil",
+    "firstName": "Ez"
+}
+
+###
+DELETE {{hostname}}{{endpoint}}/6401f24b3c3d5cb4e6303ff0
+content-type: application/json
+Authorization: {{token}}

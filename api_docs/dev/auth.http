@@ -1,0 +1,80 @@
+@hostname = http://localhost:4000/api/v1
+#@hostname = https://demo-smatera.bellyeah.jp/api/v1
+
+@endpoint = /auth
+@token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0Y2Y1NjU2Mjc0N2M4YTJhYzNmNmE5YyIsImlhdCI6MTY5MTY2OTMzOCwiZXhwIjoxNjkxNzU1NzM4fQ.qXwRAMBuUn2OBNiSd-AR_z-A8WCDatmQIsd6Wlz4SLQ
+
+### LOGIN USER
+POST {{hostname}}{{endpoint}}/login
+content-type: application/json
+Authorization: {{token}}
+
+# {
+# 	"email": "akocero@gmail.com",
+# 	"password": "password"
+# }
+
+{
+	"email": "ez@mil.com",
+	"password": "password"
+}
+
+### GET SELF
+GET {{hostname}}{{endpoint}}/self
+Authorization: {{token}}
+
+### REGISTER USER
+POST {{hostname}}{{endpoint}}/register
+content-type: application/json
+Authorization: {{token}}
+
+{
+	"email": "ez2@mil.com",
+	"password": "password",
+	"name": "ez mil",
+	"password_confirm": "password"
+}
+
+### UPDATE SELF
+PATCH {{hostname}}{{endpoint}}/self_update
+content-type: application/json
+Authorization: {{token}}
+
+{
+	"name": "Ez t",
+	"email": "ez@mil.com"
+}
+
+### UPDATE PASSWORD
+PATCH {{hostname}}{{endpoint}}/update_password
+content-type: application/json
+Authorization: {{token}}
+
+{
+
+	"password": "password",
+	"password_confirm": "password",
+	"new_password": "password"
+}
+
+### FORGOT PASSWORD
+# this request emails the user with the token and link to reset the password 
+# use the token to reset the password via api request
+POST {{hostname}}{{endpoint}}/forgot_password
+content-type: application/json
+Authorization: {{token}}
+
+{
+	"email": "ez@mil.com"
+}
+
+
+### RESET PASSWORD
+PATCH {{hostname}}{{endpoint}}/reset_password/897faf708db046afadfc51a77e309c25b649d00e72e88d879503a4d82c28bb4a
+content-type: application/json
+Authorization: {{token}}
+
+{
+	"password": "password",
+	"password_confirm": "password"
+}
