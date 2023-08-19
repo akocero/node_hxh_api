@@ -5,14 +5,17 @@ const cloudinary = require('../../../config/cloudinary.js');
 
 class ImageController extends BaseController {
 	async create(req, res) {
+		if (!req.file) {
+			return next(new AppError('File is required', 404));
+		}
 		const BaseService = new this.BaseService();
 
 		const image_res = await cloudinary.uploader.upload(req.file.path, {
 			upload_preset:
 				process.env.CLOUDINARY_IMAGE_PRESET || 'development_preset',
 		});
-
-		const data = await BaseService.create(...image_res);
+		console.log({ image_res });
+		const data = await BaseService.create(image_res);
 
 		const statusCode = 200;
 		res.status(statusCode).json(

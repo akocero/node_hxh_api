@@ -1,4 +1,3 @@
-// const error_handler = require('../../lib/error_handler');
 const AppError = require('../utils/appError.js');
 const { jsonResponse } = require('../utils/responseBuilder');
 class BaseController {
@@ -9,7 +8,7 @@ class BaseController {
 				this[services[x].className] = services[x];
 			}
 
-			// Base Service is everything so it doesn't matter what service it is
+			// Set the base service
 			this.BaseService = services[0];
 		}
 

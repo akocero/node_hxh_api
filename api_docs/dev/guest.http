@@ -13,9 +13,9 @@ POST {{hostname}}{{endpoint}}/register
 content-type: application/json
 
 {
-	"email": "akocero19@gmail.com",
-	"name": "ez mil",
-	"usage": "educ"
+	"email": "johndoe@gmail.com",
+	"name": "john doe",
+	"usage": "educational purpose only"
 }
 
 ### GET SELF

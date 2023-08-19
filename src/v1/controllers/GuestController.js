@@ -93,7 +93,7 @@ class CustomerController extends BaseController {
 		res.status(statusCode).json(
 			jsonResponse(
 				statusCode,
-				`Register successful, A verification link to activate your key was sent to: ${user.email}`,
+				`A verification link to activate your key was sent to: ${user.email}`,
 			),
 		);
 	}

@@ -9,15 +9,15 @@ POST {{hostname}}{{endpoint}}/login
 content-type: application/json
 Authorization: {{token}}
 
-# {
-# 	"email": "akocero@gmail.com",
-# 	"password": "password"
-# }
-
 {
-	"email": "ez@mil.com",
+	"email": "dev@gmail.com",
 	"password": "password"
 }
+
+# {
+# 	"email": "ez@mil.com",
+# 	"password": "password"
+# }
 
 ### GET SELF
 GET {{hostname}}{{endpoint}}/self

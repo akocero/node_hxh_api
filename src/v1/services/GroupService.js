@@ -1,9 +1,9 @@
-const Model = require('../models/CharacterModel.js');
+const Model = require('../models/GroupModel.js');
 const BaseService = require('./BaseService');
 
-class CharacterService extends BaseService {
+class GroupService extends BaseService {
 	Model;
-	static className = 'CharacterService';
+	static className = 'GroupService';
 	constructor() {
 		super(Model);
 
@@ -11,7 +11,7 @@ class CharacterService extends BaseService {
 		this.with_relation = true;
 		this.relations = [
 			{
-				path: 'groups',
+				path: 'leaders',
 				select: 'name',
 			},
 			{
@@ -22,4 +22,4 @@ class CharacterService extends BaseService {
 	}
 }
 
-module.exports = CharacterService;
+module.exports = GroupService;

@@ -1,7 +1,7 @@
 @hostname = http://localhost:4000/api/v1
 #@hostname = https://demo-smatera.bellyeah.jp/api/v1
 @endpoint = /images
-@token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0Y2Y1NjU2Mjc0N2M4YTJhYzNmNmE5YyIsImlhdCI6MTY5MTY2OTMzOCwiZXhwIjoxNjkxNzU1NzM4fQ.qXwRAMBuUn2OBNiSd-AR_z-A8WCDatmQIsd6Wlz4SLQ
+@token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZDZmZmIyNTE0MDNhZjFlMzBlNzY1ZiIsImlhdCI6MTY5MTkyMzY2MywiZXhwIjoxNjkyMDEwMDYzfQ.MbUJWEqLg1PeL28bQSHqUmZy2jvYgQQRnmlt9YbMqWA
 
 GET {{hostname}}{{endpoint}}
 content-type: application/json
@@ -18,10 +18,7 @@ content-type: application/json
 Authorization: {{token}}
 
 {
-    "mobileNumber": "092",
-    "email": "email@gmail2.com",
-    "lastName": "Mil",
-    "firstName": "Ez"
+    "file": "092"
 }
 
 ###

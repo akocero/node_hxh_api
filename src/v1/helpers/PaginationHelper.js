@@ -27,7 +27,7 @@ class PaginationHelper {
 		// if yes count the data base on the filter
 		if (this.query.filter_string) {
 			this.total_data_count = await this.Model.countDocuments(
-				_query.filter_string,
+				this.query.filter_string,
 			);
 		} else {
 			this.total_data_count = await this.Model.estimatedDocumentCount();

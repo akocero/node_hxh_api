@@ -45,6 +45,7 @@ const characterSchema = new Schema(
 		},
 		gender: {
 			type: String,
+			enum: ['male', 'female'],
 			required: [true, 'Gender is required'],
 		},
 		nen_type: {
@@ -69,7 +70,7 @@ const characterSchema = new Schema(
 		japanese_name: {
 			type: String,
 		},
-		affiliations: [
+		groups: [
 			{
 				type: mongoose.Schema.Types.ObjectId,
 				ref: 'Group',
