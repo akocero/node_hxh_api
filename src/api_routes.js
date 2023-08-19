@@ -11,7 +11,7 @@ module.exports = async function (app) {
 
 	app.get('/api/v1', (req, res) => {
 		res.status(200).json({
-			message: 'Welcome to Papier Renei API Version 1!',
+			message: 'Welcome to Hunter x Hunter API Version 1!',
 		});
 	});
 
