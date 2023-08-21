@@ -1,10 +1,13 @@
 @hostname = http://localhost:4000/api/v1
-#@hostname = https://demo-smatera.bellyeah.jp/api/v1
+#@hostname = https://hxh-api.cyclic.cloud/api/v1
 @endpoint = /characters
 @api_key = ?api_key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZDcxNTFlNjZiZjI5MzNkNjlkNjBlYiIsImlhdCI6MTY5MTgxNzI0NiwiZXhwIjoxNjk0NDA5MjQ2fQ.wEJTvygYNbvogwL49IpZTSCwhPcpEJ0_mOqkiNJKVao
-
 ### GET ALL RESOURCE
 GET {{hostname}}{{endpoint}}{{api_key}}
+content-type: application/json
+
+### GET ONE RANDOM
+GET {{hostname}}{{endpoint}}/random{{api_key}}
 content-type: application/json
 
 ### GET RESOURCE WITH FILTERS AND PAGINATION
@@ -12,6 +15,6 @@ GET {{hostname}}{{endpoint}}{{api_key}}&page=1&limit=2
 content-type: application/json
 
 ### GET SINGLE RESOURCE
-GET {{hostname}}{{endpoint}}/64d88929bde05ab19d749e2f{{api_key}}
+GET {{hostname}}{{endpoint}}/64d88ffbcbad61354d10e60a{{api_key}}
 content-type: application/json
 

@@ -7,6 +7,10 @@
 GET {{hostname}}{{endpoint}}{{api_key}}
 content-type: application/json
 
+### GET ONE RANDOM
+GET {{hostname}}{{endpoint}}/random{{api_key}}
+content-type: application/json
+
 ### GET RESOURCE WITH FILTERS AND PAGINATION
 GET {{hostname}}{{endpoint}}{{api_key}}&page=1&limit=2
 content-type: application/json

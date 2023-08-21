@@ -52,6 +52,25 @@ class BaseController {
 		return;
 	}
 
+	async readRandom(req, res, next) {
+		const BaseService = new this.BaseService();
+
+		const data = await BaseService.readRandom();
+
+		if (!data) {
+			return next(
+				new AppError('There is a problem retrieving the resouces', 404),
+			);
+		}
+
+		const statusCode = 200;
+
+		res.status(statusCode).json(
+			jsonResponse(statusCode, 'Data retrieved successfully.', data),
+		);
+		return;
+	}
+
 	async readAll(req, res) {
 		let data;
 		const BaseService = new this.BaseService();

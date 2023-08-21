@@ -19,6 +19,13 @@ router.get(
 	catchUnknownError(MainController.readAll.bind(MainController)),
 );
 
+// this random endpoint needs to be on the top of readOne route/endpoint
+router.get(
+	`${prefix}/random`,
+	api.protect,
+	catchUnknownError(MainController.readRandom.bind(MainController)),
+);
+
 router.get(
 	`${prefix}/:id`,
 	api.protect,

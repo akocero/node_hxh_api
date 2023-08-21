@@ -104,6 +104,28 @@ class BaseService {
 	}
 
 	/**
+	 * Reads random data
+	 * @param {*}
+	 * @returns Object of data
+	 */
+	async readRandom() {
+		let data;
+
+		const total_data_count = await this.Model.estimatedDocumentCount();
+
+		var random = Math.floor(Math.random() * total_data_count);
+
+		const query = this.Model.findOne().skip(random);
+		data = await this.execute(query);
+
+		if (!data) {
+			return false;
+		}
+
+		return data;
+	}
+
+	/**
 	 * Update the given row with the given id
 	 * @param {*} id
 	 * @param {*} modelObject
