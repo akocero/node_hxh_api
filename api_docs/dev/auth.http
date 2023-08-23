@@ -1,5 +1,6 @@
-@hostname = http://localhost:4000/api/v1
+#@hostname = http://localhost:4000/api/v1
 #@hostname = https://demo-smatera.bellyeah.jp/api/v1
+@hostname = https://hxh-api.cyclic.cloud/api/v1
 
 @endpoint = /auth
 @token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0Y2Y1NjU2Mjc0N2M4YTJhYzNmNmE5YyIsImlhdCI6MTY5MTY2OTMzOCwiZXhwIjoxNjkxNzU1NzM4fQ.qXwRAMBuUn2OBNiSd-AR_z-A8WCDatmQIsd6Wlz4SLQ

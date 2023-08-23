@@ -1,7 +1,7 @@
-@hostname = http://localhost:4000/api/v1
-#@hostname = https://hxh-api.cyclic.cloud/api/v1
+#@hostname = http://localhost:4000/api/v1
+@hostname = https://hxh-api.cyclic.cloud/api/v1
 @endpoint = /characters
-@api_key = ?api_key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZDcxNTFlNjZiZjI5MzNkNjlkNjBlYiIsImlhdCI6MTY5MTgxNzI0NiwiZXhwIjoxNjk0NDA5MjQ2fQ.wEJTvygYNbvogwL49IpZTSCwhPcpEJ0_mOqkiNJKVao
+@api_key = ?api_key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZTA3NTRlNGJmZjA0NzExYzQxYjg0YSIsImlhdCI6MTY5MjQzMTY5NSwiZXhwIjoxNjk1MDIzNjk1fQ.oPElF-WwJuk378oeM2fv4lJrweX-iKl3_d2u06bFvVA
 ### GET ALL RESOURCE
 GET {{hostname}}{{endpoint}}{{api_key}}
 content-type: application/json

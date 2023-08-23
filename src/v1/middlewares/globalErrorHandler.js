@@ -37,7 +37,7 @@ const dispatchProductionError = (err, req, res) => {
 	if (err.isOperational) {
 		return res
 			.status(err.statusCode)
-			.json(errorResponse(err.statusCode, undefined, err.message));
+			.json(errorResponse(err.statusCode, undefined, err.message, err.errors));
 	}
 
 	return res.status(500).json({
