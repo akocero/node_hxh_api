@@ -79,3 +79,14 @@ Authorization: {{token}}
 	"password": "password",
 	"password_confirm": "password"
 }
+
+
+###
+POST https://hxh-api.onrender.com/api/v1/guest/register
+content-type: application/json
+
+{
+   "email":"badatoeugenepaulm@gmail.com",
+   "name":"john doe",
+   "usage":"educational purpose only"
+}

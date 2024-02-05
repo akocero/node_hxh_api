@@ -61,7 +61,7 @@ class GuestService extends BaseService {
 
 	async sendVerificationEmail(email, token, api_key) {
 		const activation_url =
-			process.env.WEB_ORIGIN + '/guest/self_verify?token=' + token;
+			process.env.WEB_ORIGIN + '/api/v1/guest/self_verify?token=' + token;
 		await new Email({ email }).sendVerificationEmail(
 			token,
 			api_key,
