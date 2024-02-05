@@ -1,0 +1,79 @@
+#@hostname = http://localhost:4000/api/v1
+#@hostname = https://demo-smatera.bellyeah.jp/api/v1
+@hostname = https://hxh-api.cyclic.cloud/api/v1
+@endpoint = /characters
+@token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZTU5NjU0YzY5YjVlNTljNDBlZDYyMCIsImlhdCI6MTY5Mjc2NzgyOCwiZXhwIjoxNjkyODU0MjI4fQ.fS7qVl8EDcap4a9Y0nF3n_g9yB1dWWWwKZNSa5w2FxA
+
+### GET ALL RESOURCE
+GET {{hostname}}{{endpoint}}
+content-type: application/json
+Authorization: {{token}}
+
+### GET RESOURCE WITH FILTERS AND PAGINATION
+GET {{hostname}}{{endpoint}}?page=1&limit=2
+content-type: application/json
+Authorization: {{token}}
+
+### GET SINGLE RESOURCE
+GET {{hostname}}{{endpoint}}/6401f24b3c3d5cb4e6303ff0
+content-type: application/json
+Authorization: {{token}}
+
+### ADD/STORE RESOURCE
+POST {{hostname}}{{endpoint}}
+content-type: application/json
+Authorization: {{token}}
+
+{
+    "name": "Phinks Magcub",
+    "japanese_name": "フィンクス゠マグカブ",
+    "also_known_as": ["Fei","Phantom Troupe Member #2"],
+    "gender": "male",
+    "state": "alive",
+    "professions": [
+    "Thief","Phantom Troupe Member #5","Greed Island Player"
+    ],
+    "nen_type": [
+    "Enhancement"
+    ],
+    "abilities": ["Ripper Cyclotron"],
+    "groups": ["64d88505f5d42e977fffa4fb"]
+}
+### UPDATE RESOURCE
+PATCH {{hostname}}{{endpoint}}/64d6ffcd51403af1e30e7663
+content-type: application/json
+Authorization: {{token}}
+
+{
+      "name": "chrollo lucilfer",
+      "also_known_as": [
+        "Boss","Phantom Troupe Member #0"
+      ],
+      "gender": "male",
+      "nen_type": [
+        "Specialization"
+      ],
+      "abilities": ["Indoor Fish (Stolen)","Fun Fun Cloth (Stolen)","Teleportation (Stolen)","Black Voice (Stolen)","The Sun and Moon (Stolen)","Order Stamp (Stolen)","Gallery Fake (Stolen)","Convert Hands (Stolen)","Lovely Ghostwriter (Stolen; Former)","Double Face"],
+      "japanese_name": "クロロ゠ルシルフル",
+      "groups": ["64d88505f5d42e977fffa4fb"],
+      "professions": [
+        "thieve","Leader of the Phantom","Phantom Troupe Member #0","Floor Master","Red Cleaner (acting role)"
+      ],
+      "state": "alive"
+}
+
+###
+PATCH {{hostname}}{{endpoint}}/64d6ffcd51403af1e30e7663
+content-type: application/json
+Authorization: {{token}}
+
+{
+    "image": [
+        "64d8c87675a589f713325f11"
+    ]
+}
+
+### DELETE RESOURCE
+DELETE {{hostname}}{{endpoint}}/6401f24b3c3d5cb4e6303ff0
+content-type: application/json
+Authorization: {{token}}

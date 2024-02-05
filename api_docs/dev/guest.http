@@ -1,0 +1,22 @@
+@hostname = http://localhost:4000/api/v1
+#@hostname = https://demo-smatera.bellyeah.jp/api/v1
+
+@endpoint = /guest
+@token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0Y2Y1NjU2Mjc0N2M4YTJhYzNmNmE5YyIsImlhdCI6MTY5MTY2OTMzOCwiZXhwIjoxNjkxNzU1NzM4fQ.qXwRAMBuUn2OBNiSd-AR_z-A8WCDatmQIsd6Wlz4SLQ
+
+### GET SELF
+GET {{hostname}}{{endpoint}}/self
+Authorization: {{token}}
+
+### REGISTER USER
+POST {{hostname}}{{endpoint}}/register
+content-type: application/json
+
+{
+	"email": "johndoe@gmail.com",
+	"name": "john doe",
+	"usage": "educational purpose only"
+}
+
+### GET SELF
+GET {{hostname}}{{endpoint}}/self_verify?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2OTE4MTcwOTcsImV4cCI6MTY5NDQwOTA5N30.65CuDXZxpm8VqgqzyZam9WIFUvF_Rfnfk3Onv7TSuc8

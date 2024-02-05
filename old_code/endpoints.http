@@ -1,0 +1,34 @@
+POST http://localhost:3000/api/characters
+content-type: application/json
+# Accept: application/json
+
+{
+    "name": "Beyond Netero",
+    "nen_type": "enhancement",
+    "abilities": ["100-Type Guanyin Bodhisattva"],
+    "japanese_name": "アイザック゠ネテロ",
+    "affiliations": ["Hunter Association"],
+    "gender": "male",
+    "state": "alive",
+    "profession": ["hunter"],
+    "relatives": ["625e7b11429ca08a608fca84"]
+}
+
+###
+PUT http://localhost:3000/api/characters/625e7b11429ca08a608fca85
+content-type: application/json
+# Accept: application/json
+
+{
+    "nen_type": "enhancer"
+}
+
+
+###
+GET http://localhost:3000/api/characters
+content-type: application/json
+
+
+###
+GET http://localhost:3000/api/characters/625e7b3b429ca08a608fca86
+content-type: application/json
