@@ -34,14 +34,12 @@ router.get(
 
 router.patch(
 	`${prefix}/:id`,
-	express.json(),
 	auth.protect,
 	catchUnknownError(MainController.update.bind(MainController)),
 );
 
 router.post(
 	`${prefix}`,
-	express.json(),
 	auth.protect,
 	upload.single('image'), // you need to use this in order to accept data from formdata
 	catchUnknownError(MainController.create.bind(MainController)),

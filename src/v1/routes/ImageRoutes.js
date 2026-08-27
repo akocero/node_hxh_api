@@ -26,14 +26,12 @@ router.get(
 
 router.patch(
 	`${prefix}/:id`,
-	express.json(),
 	auth.protect,
 	catchUnknownError(MainController.update.bind(MainController)),
 );
 
 router.post(
 	`${prefix}`,
-	express.json(),
 	auth.protect,
 	upload.single('file'),
 	catchUnknownError(MainController.create.bind(MainController)),

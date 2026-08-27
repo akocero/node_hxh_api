@@ -23,13 +23,11 @@ router.get(
 
 router.post(
 	`${prefix}/register`,
-	express.json(),
 	catchUnknownError(MainController.register.bind(MainController)),
 );
 
 router.delete(
 	`${prefix}/self_deactivate`,
-	express.json(),
 	auth.protect,
 	catchUnknownError(MainController.selfDeactivate.bind(MainController)),
 );

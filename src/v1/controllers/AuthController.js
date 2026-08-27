@@ -159,8 +159,7 @@ class CustomerController extends BaseController {
 					process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000,
 			),
 			httpOnly: true,
-			secure: false,
-			//   secure: req.secure || req.headers['x-forwarded-proto'] === 'https'
+			secure: process.env.NODE_ENV === 'production',
 		});
 
 		return token;
@@ -252,7 +251,7 @@ class CustomerController extends BaseController {
 		);
 	}
 
-	async selfDeactivate(req, res) {
+	async selfDeactivate(req, res, next) {
 		const BaseService = new this.BaseService();
 		const user = await BaseService.selfDeactivate(req.user.id);
 

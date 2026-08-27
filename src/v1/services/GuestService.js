@@ -1,6 +1,5 @@
 const Model = require('../models/GuestModel.js');
 const BaseService = require('./BaseService');
-const jwt = require('jsonwebtoken');
 const Email = require('../helpers/EmailHelper.js');
 const crypto = require('crypto');
 const { v4: uuidv4 } = require('uuid');
@@ -80,10 +79,8 @@ class GuestService extends BaseService {
 		return true;
 	}
 
-	createApiKey(id) {
-		return jwt.sign({ id }, process.env.JWT_API_SECRET, {
-			expiresIn: process.env.JWT_API_EXPIRES_IN,
-		});
+	createApiKey() {
+		return crypto.randomBytes(24).toString('hex');
 	}
 
 	createVerificationToken() {

@@ -25,7 +25,7 @@ class BaseController {
 
 		const data = await BaseService.create(req.body);
 
-		const statusCode = 200;
+		const statusCode = 201;
 		res.status(statusCode).json(
 			jsonResponse(statusCode, 'Resource created successfully.', data),
 		);
@@ -84,7 +84,7 @@ class BaseController {
 		const statusCode = 200;
 
 		if (data.length === 0) {
-			res.status(statusCode).json(
+			return res.status(statusCode).json(
 				jsonResponse(statusCode, 'No data available.', data),
 			);
 		}
