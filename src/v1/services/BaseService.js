@@ -12,7 +12,7 @@ class BaseService {
 	constructor(Model) {
 		this.Model = Model;
 		this.MongoQueryBuilder = MongoQueryBuilder;
-		this.PagnationHelper = PaginationHelper;
+		this.PaginationHelper = PaginationHelper;
 	}
 
 	/**
@@ -60,7 +60,7 @@ class BaseService {
 		data = await this.execute(query.query);
 
 		if (queryString.page) {
-			const pagination_helper = new this.PagnationHelper(
+			const pagination_helper = new this.PaginationHelper(
 				this.Model,
 				data,
 				query,

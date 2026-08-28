@@ -15,7 +15,7 @@ class AuthService extends BaseService {
 		this.relations = {};
 	}
 
-	async generateKey(email) {
+	async generateKey(email, password) {
 		const user = await this.Model.findOne({ email }).select('+password');
 
 		const is_password_match = await user.comparePassword(

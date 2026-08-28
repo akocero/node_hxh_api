@@ -1,8 +1,4 @@
-@hostname = http://localhost:4000/api/v1
-#@hostname = https://demo-smatera.bellyeah.jp/api/v1
-# @hostname = https://hxh-db.onrender.com/api/v1
 @endpoint = /groups
-@token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZDZmZmIyNTE0MDNhZjFlMzBlNzY1ZiIsImlhdCI6MTY5MTkxMTE2NSwiZXhwIjoxNjkxOTk3NTY1fQ.-7xJeQGZkQ4lqQ3UvQNV873g-8Iyi8Of54xobyoL_kQ
 
 
 
