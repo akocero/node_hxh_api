@@ -1,6 +1,9 @@
 const nodemailer = require('nodemailer');
 const hbs = require('nodemailer-express-handlebars');
+const { Resend } = require('resend');
+const fs = require('fs');
 const path = require('path');
+const Handlebars = require('handlebars');
 const viewpath = path.join(__dirname, '../views/');
 
 class Email {
@@ -11,26 +14,14 @@ class Email {
 	}
 
 	newTransport() {
-		let transporter;
-		if (process.env.NODE_ENV === 'development') {
-			// Sendgrid
-			transporter = nodemailer.createTransport({
-				host: process.env.MAILTRAP_HOST,
-				port: process.env.MAILTRAP_PORT,
-				auth: {
-					user: process.env.MAILTRAP_USERNAME,
-					pass: process.env.MAILTRAP_PASSWORD,
-				},
-			});
-		} else {
-			transporter = nodemailer.createTransport({
-				host: process.env.EMAIL_HOST,
-				auth: {
-					user: process.env.EMAIL_USERNAME,
-					pass: process.env.EMAIL_PASSWORD,
-				},
-			});
-		}
+		const transporter = nodemailer.createTransport({
+			host: process.env.MAILTRAP_HOST,
+			port: process.env.MAILTRAP_PORT,
+			auth: {
+				user: process.env.MAILTRAP_USERNAME,
+				pass: process.env.MAILTRAP_PASSWORD,
+			},
+		});
 
 		const handlebarOptions = {
 			viewEngine: {
@@ -47,9 +38,23 @@ class Email {
 		return transporter;
 	}
 
-	// Send the actual email
 	async execute(template, subject, context = {}) {
-		// 2) Define email options
+		if (process.env.NODE_ENV !== 'development') {
+			const templatePath = path.join(viewpath, `${template}.handlebars`);
+			const source = fs.readFileSync(templatePath, 'utf8');
+			const compiled = Handlebars.compile(source);
+			const html = compiled(context);
+
+			const resend = new Resend(process.env.RESEND_API_KEY);
+			await resend.emails.send({
+				from: process.env.RESEND_FROM_EMAIL,
+				to: this.to,
+				subject,
+				html,
+			});
+			return;
+		}
+
 		const mailOptions = {
 			from: this.from,
 			to: this.to,
@@ -57,7 +62,6 @@ class Email {
 			template,
 			context,
 		};
-		// 3) Create a transport and send email
 		await this.newTransport().sendMail(mailOptions);
 	}
 

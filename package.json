@@ -20,6 +20,7 @@
 		"express": "^4.17.3",
 		"express-mongo-sanitize": "^2.2.0",
 		"express-rate-limit": "^8.6.2",
+		"handlebars": "^4.7.9",
 		"helmet": "^8.3.0",
 		"hpp": "^0.2.3",
 		"http-status-codes": "^2.2.0",
@@ -30,6 +31,7 @@
 		"multer": "^1.4.2",
 		"nodemailer": "6.1.1",
 		"nodemailer-express-handlebars": "^5.0.0",
+		"resend": "^6.25.0",
 		"uuid": "^9.0.0",
 		"validator": "^13.7.0"
 	},
