@@ -11,6 +11,10 @@ const globalErrorHandler = require('./v1/middlewares/globalErrorHandler');
 
 const app = express();
 
+// Trust Render's (and other single-hop) reverse proxy so express-rate-limit
+// can read the real client IP from X-Forwarded-For
+app.set('trust proxy', 1);
+
 // Set secure HTTP headers
 app.use(helmet());
 
