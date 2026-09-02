@@ -9,6 +9,7 @@ const viewpath = path.join(__dirname, '../views/');
 class Email {
 	constructor(user, url) {
 		this.to = user.email;
+		this.name = user.name || user.email;
 		this.url = url;
 		this.from = process.env.EMAIL_FROM_NAME;
 	}
@@ -67,21 +68,34 @@ class Email {
 
 	async sendPasswordReset(url) {
 		const content = { name: this.to, url };
-		const subject = 'Your password reset token (valid for only 10 minutes)';
-		const template = 'password_reset';
-		await this.execute(template, subject, content);
+		await this.execute(
+			'password_reset',
+			'Your password reset token (valid for only 10 minutes)',
+			content,
+		);
 	}
 
 	async sendVerificationEmail(token, api_key, activation_url) {
-		const content = {
-			api_key,
-			token,
-			activation_url,
-			name: this.to,
-		};
-		const subject = 'Api key verification';
-		const template = 'verify_key';
-		await this.execute(template, subject, content);
+		const content = { api_key, token, activation_url, name: this.name };
+		await this.execute('verify_key', 'Api key verification', content);
+	}
+
+	async sendMagicLink(url) {
+		const content = { name: this.name, url };
+		await this.execute(
+			'magic_link',
+			'Your HXH API login link (valid for 15 minutes)',
+			content,
+		);
+	}
+
+	async sendGuestPasswordReset(url) {
+		const content = { name: this.name, url };
+		await this.execute(
+			'guest_password_reset',
+			'Reset your HXH API password (valid for 10 minutes)',
+			content,
+		);
 	}
 }
 
