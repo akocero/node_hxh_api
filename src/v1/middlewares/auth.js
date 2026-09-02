@@ -15,11 +15,15 @@ exports.protect = catchUnknownError(async (req, res, next) => {
 	}
 	// console.log(req.headers);
 	if (!token) {
-		return next(new AppError('Forbidden: No provided token', 403));
+		return next(new AppError('Unauthorized: No provided token', 401));
 	}
 
-	// Verify token
-	const decoded = jwt.verify(token, process.env.JWT_SECRET);
+	let decoded;
+	try {
+		decoded = jwt.verify(token, process.env.JWT_SECRET);
+	} catch {
+		return next(new AppError('Unauthorized: Invalid or expired token', 401));
+	}
 
 	// Get user from the token
 	const authenticatedUser = await User.findById(decoded.id).select(

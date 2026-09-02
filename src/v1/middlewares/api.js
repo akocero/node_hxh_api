@@ -29,6 +29,19 @@ exports.protect = catchUnknownError(async (req, res, next) => {
 		return next(new AppError('Api key is not yet verified.', 401));
 	}
 
+	// null expiry = legacy key treated as expired
+	if (
+		!authenticatedUser.api_key_expires ||
+		authenticatedUser.api_key_expires < Date.now()
+	) {
+		return next(
+			new AppError(
+				'Your API key has expired. Please log in to your dashboard to generate a new one.',
+				401,
+			),
+		);
+	}
+
 	req.user = authenticatedUser;
 	next();
 });

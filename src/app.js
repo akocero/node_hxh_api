@@ -62,6 +62,9 @@ app.use('/api/v1/auth/login', authLimiter);
 app.use('/api/v1/auth/register', authLimiter);
 app.use('/api/v1/auth/forgot_password', authLimiter);
 app.use('/api/v1/guest/register', authLimiter);
+app.use('/api/v1/guest/magic_link', authLimiter);
+app.use('/api/v1/guest/login', authLimiter);
+app.use('/api/v1/guest/forgot_password', authLimiter);
 
 const routes = require('./api_routes');
 routes(app);
