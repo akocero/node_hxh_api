@@ -1,21 +1,33 @@
+const path = require('path');
+const { v4: uuidv4 } = require('uuid');
+const { PutObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3');
 const BaseController = require('./BaseController');
 const AppError = require('../utils/appError.js');
 const { jsonResponse } = require('../utils/responseBuilder');
-const cloudinary = require('../../../config/cloudinary.js');
+const r2 = require('../../../config/r2.js');
 
 class ImageController extends BaseController {
-	async create(req, res) {
+	async create(req, res, next) {
 		if (!req.file) {
-			return next(new AppError('File is required', 404));
+			return next(new AppError('File is required', 400));
 		}
 		const BaseService = new this.BaseService();
 
-		const image_res = await cloudinary.uploader.upload(req.file.path, {
-			upload_preset:
-				process.env.CLOUDINARY_IMAGE_PRESET || 'development_preset',
-		});
-		console.log({ image_res });
-		const data = await BaseService.create(image_res);
+		const key = `${uuidv4()}${path.extname(req.file.originalname)}`;
+
+		await r2.send(
+			new PutObjectCommand({
+				Bucket: process.env.R2_BUCKET_NAME,
+				Key: key,
+				Body: req.file.buffer,
+				ContentType: req.file.mimetype,
+			}),
+		);
+
+		const public_id = key;
+		const secure_url = `${process.env.R2_PUBLIC_URL}/${key}`;
+
+		const data = await BaseService.create({ public_id, secure_url });
 
 		const statusCode = 200;
 		res.status(statusCode).json(
@@ -36,38 +48,16 @@ class ImageController extends BaseController {
 			);
 		}
 
-		// update related model if the image was deleted need to deleted also on other models
-		// const ecomSet = await EcommSetting.updateMany(
-		// 	{},
-		// 	{
-		// 		$pull: {
-		// 			navbarBGs: id,
-		// 			heros: id,
-		// 		},
-		// 	},
-		// );
-
-		// await EcommSetting.updateOne(
-		// 	{
-		// 		activeHero: id,
-		// 	},
-		// 	{
-		// 		$unset: {
-		// 			activeHero: '',
-		// 		},
-		// 	},
-		// );
-
-		await cloudinary.uploader.destroy(data.public_id);
+		await r2.send(
+			new DeleteObjectCommand({
+				Bucket: process.env.R2_BUCKET_NAME,
+				Key: data.public_id,
+			}),
+		);
 
 		const statusCode = 200;
-
 		res.status(statusCode).json(
-			jsonResponse(
-				statusCode,
-				'Resource deleted successfully.',
-				undefined,
-			),
+			jsonResponse(statusCode, 'Resource deleted successfully.', undefined),
 		);
 		return;
 	}

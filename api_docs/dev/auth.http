@@ -6,7 +6,7 @@ content-type: application/json
 Authorization: {{token}}
 
 {
-	"email": "perwisyo0101@gmail.com",
+	"email": "ez2@mil.com",
 	"password": "password"
 }
 

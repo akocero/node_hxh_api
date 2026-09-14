@@ -106,3 +106,6 @@ dist
 
 # TernJS port file
 .tern-port
+
+# Local seed data — keep off git (contains prod-ready content, not meant for public repo)
+dev-data/data/

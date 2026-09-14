@@ -3,7 +3,7 @@
 ### GET ALL RESOURCE
 GET {{hostname}}{{endpoint}}
 content-type: application/json
-Authorization: {{api_key}}
+Authorization: {{token}}
 
 ### GET RESOURCE WITH FILTERS AND PAGINATION
 GET {{hostname}}{{endpoint}}?page=1&limit=2
@@ -65,7 +65,7 @@ Authorization: {{token}}
 
 {
     "image": [
-        "64d8c87675a589f713325f11"
+        "6a994f297474ac7d910ac174"
     ]
 }
 
