@@ -11,12 +11,15 @@ Authorization: {{token}}
 
 ###
 POST {{hostname}}{{endpoint}}
-content-type: application/json
+Content-Type: multipart/form-data; boundary=boundary
 Authorization: {{token}}
 
-{
-    "file": "092"
-}
+--boundary
+Content-Disposition: form-data; name="file"; filename="b0jnxdp6axmbpd0fxzti.webp"
+Content-Type: image/webp
+
+< ../../../hxh_images/b0jnxdp6axmbpd0fxzti.webp
+--boundary--
 
 ###
 PATCH {{hostname}}{{endpoint}}/6401f24b3c3d5cb4e6303ff0
